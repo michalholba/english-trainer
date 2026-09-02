@@ -41,6 +41,28 @@ var LESSONS = [
   { id: 15, title: "Legal II",                date: "2024-07-19", dateSource: "onenote-header", source: "15) Legal II.pdf" }
 ];
 
+/* Theme groups for the UI. Phrases keep their fine-grained `theme`; this maps
+   those onto a short, selectable list. Every theme must appear exactly once —
+   the app checks this on load and warns if a new theme is left unassigned. */
+var GROUPS = [
+  { id: "smalltalk",  label: "Small Talk",   icon: "💬",
+    themes: ["small-talk", "building-rapport", "answering-how-is-business", "pub-social"] },
+  { id: "meetings",   label: "Meetings",     icon: "📋",
+    themes: ["running-a-meeting", "disagreeing-politely", "pivoting-to-business"] },
+  { id: "negotiation",label: "Negotiation",  icon: "🤝",
+    themes: ["negotiating", "decision-making", "strategic-framing", "strategy-growth", "leadership"] },
+  { id: "networking", label: "Networking",   icon: "🥂",
+    themes: ["networking"] },
+  { id: "presenting", label: "Presenting",   icon: "🎤",
+    themes: ["conference"] },
+  { id: "finance",    label: "Finance",      icon: "📈",
+    themes: ["financial"] },
+  { id: "legal",      label: "Legal",        icon: "⚖️",
+    themes: ["legal", "crime-vocabulary"] },
+  { id: "everyday",   label: "Everyday",     icon: "🗣",
+    themes: ["phrasal-verbs", "business-email", "grammar-traps"] }
+];
+
 var PHRASES = [
 
   /* ══════════════════════════════════════════════════════════════════
@@ -1452,4 +1474,5 @@ var PHRASES = [
 if (typeof window !== "undefined") {
   window.LESSONS = LESSONS;
   window.PHRASES = PHRASES;
+  window.GROUPS  = GROUPS;
 }

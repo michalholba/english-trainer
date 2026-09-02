@@ -26,7 +26,14 @@ shows the correction explicitly.
 target phrase and its acceptable variants, then grade yourself
 *Got it / Nearly / Missed*.
 
-Pick a theme (20 available) and an order before starting.
+The home screen shows your library split into **proved** (green — graded correct in
+Testing), **learned** (orange — seen but not yet proved) and **new**, plus a daily
+streak and goal. Pick any combination of the 8 topic groups, then tap **Start
+learning** or **Start testing**.
+
+Topics are grouped for the UI in `GROUPS` at the top of `src/content.js`. Phrases keep
+their fine-grained `theme`; the build refuses to publish if a theme isn't assigned to
+exactly one group, since its phrases would be unreachable from the picker.
 
 ## Spaced repetition
 
