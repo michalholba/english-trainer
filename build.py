@@ -13,6 +13,7 @@ Then commit and push; the site updates in about a minute.
 import re
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).parent
@@ -75,6 +76,13 @@ def main():
         fail("content.js contains a literal closing script tag — it would truncate the bundle")
 
     bundle = html.replace(MARKER, "<script>\n" + content + "\n</script>")
+
+    # Stamp the build so a user can tell which version they're running — the
+    # difference between "the app is broken" and "you have a cached old copy".
+    stamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+    if "__BUILD__" not in bundle:
+        fail("__BUILD__ placeholder missing from src/index.html")
+    bundle = bundle.replace("__BUILD__", stamp)
 
     # Sanity checks on the produced artifact. Count only real tags at the start
     # of a line — the word "<script>" also appears inside code comments.
