@@ -1,7 +1,7 @@
 # English Phrase Trainer
 
 A C2-level business English drill built from real lesson notes.
-**155 phrases across 11 lessons**, covering negotiation, meetings, networking,
+**205 phrases across 15 lessons**, covering negotiation, meetings, networking,
 financial and legal English, plus the idioms and register traps that actually
 separate C2 from C1.
 
@@ -26,7 +26,7 @@ shows the correction explicitly.
 target phrase and its acceptable variants, then grade yourself
 *Got it / Nearly / Missed*.
 
-Pick a theme (19 available) and an order before starting.
+Pick a theme (20 available) and an order before starting.
 
 ## Spaced repetition
 
