@@ -34,7 +34,11 @@ var LESSONS = [
   { id: 8,  title: "Advanced Business",       date: "2026-03-13", dateSource: "onenote-header", source: "8) Advanced business phrases.pdf" },
   { id: 11, title: "Crime & Punishment",      date: "2026-03-14", dateSource: "onenote-header", source: "11) Trestne ciny.pdf" },
   { id: 9,  title: "Negotiations",            date: "2026-03-20", dateSource: "onenote-header", source: "9 Negotiations.pdf" },
-  { id: 10, title: "Restaurant",              date: "2026-07-31", dateSource: "onenote-header", source: "10) Restaurant.pdf" }
+  { id: 10, title: "Restaurant",              date: "2026-07-31", dateSource: "onenote-header", source: "10) Restaurant.pdf" },
+  { id: 12, title: "Everyday Phrases I",      date: "2021-01-21", dateSource: "onenote-header-cs", source: "12 ) Everyday Phrases.pdf" },
+  { id: 13, title: "Everyday Phrases II",     date: "2023-12-08", dateSource: "onenote-header", source: "13) Everyday Phrases.pdf" },
+  { id: 14, title: "Conference Speech",       date: "2024-10-18", dateSource: "onenote-header", source: "14) Conference speech.pdf" },
+  { id: 15, title: "Legal II",                date: "2024-07-19", dateSource: "onenote-header", source: "15) Legal II.pdf" }
 ];
 
 var PHRASES = [
@@ -1108,7 +1112,337 @@ var PHRASES = [
     en: "You know, I like it when the usual suspects are struggling a bit — anybody can win it.",
     cs: "Mám rád, když se favoritům nedaří — pak to může vyhrát kdokoli.",
     tip: "“The usual suspects” = the predictable big names. Slightly ironic and very idiomatic, in sport and in business.",
-    situation: "Favorité mají slabší sezónu a vás to baví. Vyjádřete to." }
+    situation: "Favorité mají slabší sezónu a vás to baví. Vyjádřete to." },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 12 — Everyday phrases I / phrasal verbs  (2021-01-21)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "ev-rabbit-hole", theme: "phrasal-verbs", register: "idiom", lessons: [12], date: "2021-01-21",
+    en: "Let's not go down that rabbit hole.",
+    cs: "Nepouštějme se do toho — je to bezedná díra.",
+    example: "Guys, let's keep this simple and not go down that rabbit hole.",
+    tip: "A tangent that swallows far more time than expected. Very common in meetings. Note the fixed preposition: go *down* a rabbit hole.",
+    situation: "Diskuze míří k tématu, které by zabralo hodiny. Zarazte to." },
+
+  { id: "ev-cross-my-mind", theme: "phrasal-verbs", register: "neutral", lessons: [12], date: "2021-01-21",
+    en: "It crossed my mind that she might not come.",
+    cs: "Napadlo mě, že možná nepřijde.",
+    tip: "“Cross my mind” describes a thought arriving unbidden — almost always about a past moment, and usually paired with *when*.",
+    situation: "Během jízdy vás napadla myšlenka. Popište to." },
+
+  { id: "ev-came-to-mind", theme: "phrasal-verbs", register: "neutral", lessons: [12], date: "2021-01-21",
+    en: "Something just came to mind. / Something just occurred to me.",
+    cs: "Něco mě právě napadlo.",
+    original: "something just came on my mind",
+    tip: "It's “came TO mind”, never “came on my mind”. “It occurred to me” is the slightly more formal twin — both are about a thought arriving right now.",
+    situation: "Právě vás něco napadlo a chcete to hned říct.",
+    variants: ["I just had a thought.", "I just thought of something.", "You know what I just remembered?"] },
+
+  { id: "ev-take-after", theme: "phrasal-verbs", register: "neutral", lessons: [12], date: "2021-01-21",
+    en: "He takes after his dad.",
+    cs: "Je po tátovi.",
+    tip: "Resemblance in looks or character, only ever about family. Don't confuse with “look after” = take care of.",
+    situation: "Někdo se povahou i vzhledem podobá svému otci. Řekněte to." },
+
+  { id: "ev-look-after", theme: "phrasal-verbs", register: "neutral", lessons: [12], date: "2021-01-21",
+    en: "Could you look after the kids while I'm out?",
+    cs: "Pohlídal bys děti, než se vrátím?",
+    tip: "“Look after” = take care of. Distinct from “take after” (resemble) and “look up” (search for) — three very different phrasal verbs.",
+    situation: "Potřebujete, aby někdo pohlídal děti." },
+
+  { id: "ev-let-go", theme: "phrasal-verbs", register: "client-safe", lessons: [12], date: "2021-01-21",
+    en: "We had to let him go.",
+    cs: "Museli jsme se s ním rozloučit (propustit ho).",
+    tip: "The standard euphemism for firing someone — softer than “we fired him”. Separately, “let it go” means stop dwelling on something.",
+    situation: "Museli jste propustit zaměstnance. Řekněte to šetrně." },
+
+  { id: "ev-flip-out", theme: "phrasal-verbs", register: "casual", lessons: [12], date: "2021-01-21",
+    en: "He completely flipped out.",
+    cs: "Úplně se zbláznil / vyletěl z kůže.",
+    tip: "Lose control emotionally. “Freak out” is the near-synonym and slightly more common in American English.",
+    situation: "Někdo zareagoval naprosto nepřiměřeně a vybuchl." },
+
+  { id: "ev-figure-out", theme: "phrasal-verbs", register: "neutral", lessons: [12], date: "2021-01-21",
+    en: "I couldn't figure out the answers to half the questions.",
+    cs: "Nedokázal jsem přijít na odpovědi ani na polovinu otázek.",
+    tip: "“Figure out” = work out a solution. Plain “figure” alone means assume: “I figured you'd be here.”",
+    situation: "Nedokázali jste vyřešit většinu úkolu. Řekněte to." },
+
+  { id: "ev-figured", theme: "phrasal-verbs", register: "casual", lessons: [12], date: "2021-01-21",
+    en: "I figured you'd be here.",
+    cs: "Říkal jsem si, že tu budeš.",
+    tip: "“I figured” = I assumed / I reckoned. Extremely common in spoken American English and quite different from “figure out”.",
+    situation: "Předpokládali jste, že tam někdo bude — a byl." },
+
+  { id: "ev-show-around", theme: "phrasal-verbs", register: "client-safe", lessons: [12], date: "2021-01-21",
+    en: "If you ever come to Prague, I'd be happy to show you around.",
+    cs: "Kdybyste někdy přijeli do Prahy, rád vás provedu.",
+    tip: "The natural way to offer hospitality to a visiting colleague or client. Warm without being over-committing.",
+    situation: "Nabídněte zahraničnímu kolegovi, že mu ukážete své město." },
+
+  { id: "ev-ask-over", theme: "phrasal-verbs", register: "casual", lessons: [12], date: "2021-01-21",
+    en: "We should ask them over for dinner.",
+    cs: "Měli bychom je pozvat k nám na večeři.",
+    tip: "“Ask/have someone over” = invite to your home. “Ask them out” means invite them out — and in the singular usually implies a date.",
+    situation: "Chcete pozvat přátele k sobě domů na večeři." },
+
+  { id: "ev-hang-out", theme: "phrasal-verbs", register: "casual", lessons: [12], date: "2021-01-21",
+    en: "We just hung out last night.",
+    cs: "Jen jsme se tak poflakovali.",
+    tip: "Spend relaxed time together with no particular plan. Past tense is *hung*, not *hanged*.",
+    situation: "Popište nezávazně strávený večer s přáteli." },
+
+  { id: "ev-gonna-chill", theme: "phrasal-verbs", register: "casual", lessons: [12], date: "2021-01-21",
+    en: "I think I'm just going to chill at the hotel — I've got an early flight.",
+    cs: "Asi zůstanu v hotelu a odpočinu si — mám brzy ráno let.",
+    tip: "The graceful decline on a business trip: give a reason and it never reads as rejection.",
+    situation: "Kolegové vás zvou ven, ale vy chcete zůstat v hotelu. Odmítněte mile.",
+    variants: ["I'd love to, but I've got some work I need to finish.", "I wish I could."] },
+
+  { id: "ev-mess-up", theme: "phrasal-verbs", register: "casual", lessons: [12], date: "2021-01-21",
+    en: "Sorry, I messed up.",
+    cs: "Promiň, zpackal jsem to.",
+    tip: "The clean, professional way to own a mistake. Note the family: “mess up” = make a mistake, “don't mess with me” = don't provoke me, “a mess” = chaos.",
+    situation: "Udělali jste chybu. Přiznejte ji bez vytáček." },
+
+  { id: "ev-bring-up-children", theme: "phrasal-verbs", register: "neutral", lessons: [12], date: "2021-01-21",
+    en: "She was brought up in Prague.",
+    cs: "Vyrostla v Praze.",
+    tip: "“Bring up” = raise a child. It also means introduce a topic — “I didn't want to bring it up in the meeting.”",
+    situation: "Řekněte, kde někdo vyrůstal." },
+
+  { id: "ev-thrilled", theme: "small-talk", register: "idiom", lessons: [12], date: "2021-01-21",
+    en: "I couldn't be more thrilled for you.",
+    cs: "Nemohl bych mít větší radost.",
+    tip: "Warm, genuine congratulation. Careful with tone — “I'm sure he'd be thrilled” is a stock sarcastic line.",
+    situation: "Kolega dostal povýšení. Vyjádřete upřímnou radost." },
+
+  { id: "ev-had-better", theme: "grammar-traps", register: "neutral", lessons: [12], date: "2021-01-21",
+    en: "I'd better get going. / I had better call her.",
+    cs: "Měl bych už jít. / Radši jí zavolám.",
+    tip: "ALWAYS the past form “had better” + a present-tense verb, even about the future. Never “I have better”. Usually contracted to “I'd better”.",
+    situation: "Je čas odejít. Řekněte to přirozeně." },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 13 — Everyday phrases II / follow-up  (2023-12-08)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "ev2-nothing-pressing", theme: "business-email", register: "client-safe", lessons: [13], date: "2023-12-08",
+    en: "I don't have any pressing topics at the moment.",
+    cs: "Nemám teď nic naléhavého.",
+    tip: "“Pressing” = urgent, can't wait. The polite way to say a meeting isn't needed without sounding dismissive.",
+    situation: "Nemáte nic urgentního a chcete navrhnout, ať se sejdete příště.",
+    variants: ["There's nothing pressing at the moment.", "Nothing that can't wait till next time."] },
+
+  { id: "ev2-catch-up-next-time", theme: "business-email", register: "client-safe", lessons: [13], date: "2023-12-08",
+    en: "Let's postpone and catch up next time.",
+    cs: "Přesuňme to a domluvme se příště.",
+    tip: "Pairs naturally with “nothing pressing” — you cancel the meeting while keeping the relationship warm.",
+    situation: "Chcete zrušit schůzku, ale zachovat dobrý vztah." },
+
+  { id: "ev2-nudge", theme: "business-email", register: "neutral", lessons: [13], date: "2023-12-08",
+    en: "Just nudging this back to the top of your inbox.",
+    cs: "Jen to posouvám zpátky nahoru ve vaší schránce.",
+    original: "I'm floating this back to the top of your mailbox",
+    tip: "The standard, non-annoying follow-up. “Nudge” is deliberately gentle — far better than “Any update?” Say “inbox”, not “mailbox”.",
+    situation: "Nikdo neodpověděl na váš e-mail. Připomeňte se slušně." },
+
+  { id: "ev2-risk-being-pest", theme: "business-email", register: "client-safe", lessons: [13], date: "2023-12-08",
+    en: "At the risk of being a pest —",
+    cs: "S rizikem, že už otravuju —",
+    tip: "Acknowledging you're chasing makes a second or third follow-up land far better. Self-aware, not apologetic.",
+    situation: "Podruhé urgujete odpověď a chcete to odlehčit." },
+
+  { id: "ev2-nag", theme: "pub-social", register: "casual", lessons: [13], date: "2023-12-08",
+    en: "Stop nagging me. / Don't be a nag.",
+    cs: "Přestaň mě otravovat. / Nebuď otrava.",
+    tip: "“Nag” = repeatedly pester about something undone. Fine among friends and family; too personal for colleagues.",
+    situation: "Někdo blízký vám pořád něco připomíná. Řekněte mu, ať toho nechá.",
+    variants: ["You've been pestering me about this."] },
+
+  { id: "ev2-pop-in", theme: "phrasal-verbs", register: "casual", lessons: [13], date: "2023-12-08",
+    en: "I'll pop in sometime next week and see how you guys are doing.",
+    cs: "Někdy příští týden se stavím a mrknu, jak se máte.",
+    tip: "“Pop in” / “drop in” = a short, unannounced visit. Friendly and low-commitment.",
+    situation: "Chcete se někdy příště nezávazně zastavit." },
+
+  { id: "ev2-where-are-we", theme: "business-email", register: "neutral", lessons: [13], date: "2023-12-08",
+    en: "…just to see where we are.",
+    cs: "…jen abych zjistil, jak na tom jsme.",
+    tip: "“Where we are” = current status. Neutral and non-accusatory — it asks for a status without implying anyone is late.",
+    situation: "Chcete zjistit aktuální stav projektu, aniž byste tlačili." },
+
+  { id: "ev2-direct-this-to", theme: "business-email", register: "client-safe", lessons: [13], date: "2023-12-08",
+    en: "If there's someone else I should direct this to, please shoot me an email and I'll take it up with them.",
+    cs: "Pokud se s tím mám obrátit na někoho jiného, dejte mi vědět a vyřídím to s ním.",
+    tip: "Gives the recipient an easy exit when it isn't their responsibility — often gets a faster reply than chasing them directly. “Shoot me an email” is casual but standard in American business.",
+    situation: "Nejste si jistý, jestli píšete správné osobě. Nabídněte přesměrování." },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 14 — Conference speech  (2024-10-18)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "conf2-just-have-attention", theme: "conference", register: "client-safe", lessons: [14], date: "2024-10-18",
+    en: "Hello everyone — if I could just have your attention, please. We're ready to start.",
+    cs: "Dobrý den všem — mohu poprosit o pozornost? Můžeme začít.",
+    tip: "The opener for a room that's still talking. “If I could just…” is softer and more effective than a direct command.",
+    situation: "Sál je hlučný a vy zahajujete konferenci.",
+    variants: ["Thank you everyone — if I might have your attention.", "Let's go ahead and get going."] },
+
+  { id: "conf2-officially-welcome", theme: "conference", register: "formal", lessons: [14], date: "2024-10-18",
+    en: "I'd like to officially welcome you to the 10th annual SAP Connect.",
+    cs: "Rád bych vás oficiálně přivítal na desátém ročníku SAP Connect.",
+    tip: "The formal welcome line. Note “the 10th annual X” — the standard way to number a recurring event.",
+    situation: "Oficiálně přivítejte účastníky výroční konference." },
+
+  { id: "conf2-started-with-bang", theme: "conference", register: "idiom", lessons: [14], date: "2024-10-18",
+    en: "We started off with a bang last night — I hope you all enjoyed it as much as I did.",
+    cs: "Včera večer jsme to rozjeli ve velkém — snad jste si to užili jako já.",
+    tip: "“Start off with a bang” = begin impressively. Ideal for referring back to an opening reception.",
+    situation: "Navažte na úspěšný večerní program z předchozího dne." },
+
+  { id: "conf2-down-to-business", theme: "conference", register: "idiom", lessons: [14], date: "2024-10-18",
+    en: "But now, unfortunately, it's down to business.",
+    cs: "Ale teď už bohužel k práci.",
+    tip: "“Down to business” = time to get serious. The mock-regret is what makes it land as a joke.",
+    situation: "Po neformálním úvodu přecházíte k pracovní části.",
+    variants: ["It's time to get to work."] },
+
+  { id: "conf2-show-of-hands", theme: "conference", register: "neutral", lessons: [14], date: "2024-10-18",
+    en: "How many of you, by a show of hands, are attending this conference for the first time?",
+    cs: "Kdo z vás je tu poprvé? Zvedněte prosím ruku.",
+    tip: "“By a show of hands” is the fixed phrase for a quick audience poll — an easy way to wake a room up.",
+    situation: "Chcete zjistit, kolik lidí je na konferenci poprvé." },
+
+  { id: "conf2-review-for-newbies", theme: "conference", register: "casual", lessons: [14], date: "2024-10-18",
+    en: "So for those of you who have been here before, this will be a review — but for the newbies, I'll quickly explain how it works.",
+    cs: "Pro ty, kdo tu už byli, to bude opakování — nováčkům rychle vysvětlím, jak to funguje.",
+    tip: "Addresses both halves of a mixed audience so neither feels talked down to. “Newbies” is informal but warm.",
+    situation: "V publiku jsou zkušení i nováčci. Oslovte obě skupiny." },
+
+  { id: "conf2-appeal-to-everybody", theme: "conference", register: "neutral", lessons: [14], date: "2024-10-18",
+    en: "We've designed the conference so that there's something to appeal to everybody.",
+    cs: "Konferenci jsme navrhli tak, aby si každý našel to své.",
+    tip: "“Appeal to” = attract or interest. The standard way to describe a varied programme.",
+    situation: "Vysvětlete, že program je pestrý a každý si vybere." },
+
+  { id: "conf2-thats-enough-of-me", theme: "conference", register: "casual", lessons: [14], date: "2024-10-18",
+    en: "And that's enough of me — that's all for now.",
+    cs: "A to by ode mě stačilo — to je prozatím vše.",
+    tip: "Self-deprecating close that gets you off stage gracefully. Reliably earns a small laugh.",
+    situation: "Končíte úvodní projev a předáváte slovo dál." },
+
+  { id: "conf2-out-and-about", theme: "conference", register: "idiom", lessons: [14], date: "2024-10-18",
+    en: "I'll see you out and about, and I hope to run into some of you this weekend and catch up.",
+    cs: "Uvidíme se během akce a snad na některé narazím o víkendu.",
+    tip: "“Out and about” = around the venue; “run into” = meet by chance. Both make a closing line sound personal rather than scripted.",
+    situation: "Rozlučte se s publikem a naznačte, že se potkáte během akce.",
+    variants: ["I'd like to wish you a productive week."] },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 15 — Legal II / courtroom  (2024-07-19)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "law2-prosecution-defense", theme: "legal", register: "formal", lessons: [15], date: "2024-07-19",
+    en: "prosecution → district attorney (state attorney is the highest level) · defense → defense attorney",
+    cs: "obžaloba → státní zástupce · obhajoba → obhájce",
+    tip: "In the US the prosecutor is the *district attorney* (DA) at county level, *state attorney* above that. The defense lawyer is the *defense attorney*.",
+    situation: "Vysvětlete, kdo zastupuje obžalobu a kdo obhajobu v americkém soudu." },
+
+  { id: "law2-plaintiff-defendant", theme: "legal", register: "formal", lessons: [15], date: "2024-07-19",
+    en: "plaintiff vs. defendant",
+    cs: "žalobce vs. žalovaný / obžalovaný",
+    tip: "The *plaintiff* brings a civil case; the *defendant* is on the receiving end in both civil and criminal cases.",
+    situation: "Pojmenujte obě strany civilního sporu." },
+
+  { id: "law2-gag-order", theme: "legal", register: "formal", lessons: [15], date: "2024-07-19",
+    en: "gag order — a court order barring someone from discussing a case publicly",
+    cs: "soudní zákaz vyjadřovat se k případu",
+    example: "The judge issued a gag order to prevent the parties from commenting to the press.",
+    tip: "From “to gag” = silence someone. A gag order is *issued* by a judge and *defied* if broken.",
+    situation: "Soudce zakázal stranám mluvit s médii. Pojmenujte to." },
+
+  { id: "law2-contempt", theme: "legal", register: "formal", lessons: [15], date: "2024-07-19",
+    en: "to hold someone in contempt — willful disobedience of, or open disrespect toward, the court",
+    cs: "uznat někoho vinným z pohrdání soudem",
+    example: "I hold you in contempt.",
+    tip: "“In contempt (of court)”. The judge *holds* you in contempt, and it can mean immediate jail without trial.",
+    situation: "Někdo neuposlechl soudce. Popište, co soudce udělá." },
+
+  { id: "law2-defy", theme: "legal", register: "formal", lessons: [15], date: "2024-07-19",
+    en: "to defy a gag order — to disobey it openly",
+    cs: "porušit / vzepřít se soudnímu příkazu",
+    tip: "“Defy” is stronger than “disobey” — it implies open, deliberate refusal rather than mere non-compliance.",
+    situation: "Někdo úmyslně porušil soudní zákaz. Popište to." },
+
+  { id: "law2-lenient", theme: "legal", register: "formal", lessons: [15], date: "2024-07-19",
+    en: "a lenient judge / a lenient sentence — not strict",
+    cs: "mírný soudce / mírný trest",
+    tip: "The opposite is *harsh* or *severe*. Collocates naturally with judge, sentence, and punishment.",
+    situation: "Soudce uložil nečekaně mírný trest. Popište to." },
+
+  { id: "law2-let-off-warning", theme: "legal", register: "idiom", lessons: [15], date: "2024-07-19",
+    en: "to let someone off with a warning",
+    cs: "pustit někoho jen s napomenutím",
+    tip: "“Let off” = release without full punishment. Everyday register too — a police officer can let you off with a warning.",
+    situation: "Policista vás nechal jít jen s napomenutím." },
+
+  { id: "law2-leeway", theme: "legal", register: "idiom", lessons: [15], date: "2024-07-19",
+    en: "I'll give you a little leeway this time.",
+    cs: "Tentokrát vám dám trochu prostoru.",
+    tip: "“Leeway” = room to manoeuvre within the rules. Very useful in negotiation as well as legal contexts.",
+    situation: "Pravidla jsou daná, ale tentokrát chcete udělat výjimku." },
+
+  { id: "law2-incarceration", theme: "crime-vocabulary", register: "formal", lessons: [15], date: "2024-07-19",
+    en: "incarceration — imprisonment",
+    cs: "uvěznění",
+    tip: "The formal term for being held in prison. “Incarcerated” is the standard adjective in American legal and journalistic writing.",
+    situation: "Použijte formální výraz pro uvěznění." },
+
+  { id: "law2-rebut", theme: "legal", register: "formal", lessons: [15], date: "2024-07-19",
+    en: "to rebut — to respond to an argument with counter-evidence",
+    cs: "vyvrátit, odpovědět protiargumentem",
+    tip: "Stronger than “reply”: a rebuttal argues back with evidence. The noun is *rebuttal*.",
+    situation: "Právník odpověděl na argument protistrany důkazy." },
+
+  { id: "law2-disgraced", theme: "legal", register: "formal", lessons: [15], date: "2024-07-19",
+    en: "disgraced — publicly discredited",
+    cs: "zdiskreditovaný, zostuzený",
+    example: "the disgraced former CEO",
+    tip: "Standard media collocation: *disgraced* + a role (executive, politician, lawyer). Implies public downfall, not just a mistake.",
+    situation: "Popište manažera, který veřejně padl kvůli skandálu." },
+
+  { id: "law2-appeal", theme: "legal", register: "formal", lessons: [15], date: "2024-07-19",
+    en: "to appeal a ruling · the Court of Appeal",
+    cs: "odvolat se proti rozhodnutí · odvolací soud",
+    tip: "You appeal a ruling *against* someone, with no preposition before the ruling: “to appeal the decision”, not “appeal against the decision” in American usage.",
+    situation: "Chcete se odvolat proti rozhodnutí soudu." },
+
+  { id: "law2-bar-from", theme: "legal", register: "formal", lessons: [15], date: "2024-07-19",
+    en: "to bar someone from something — to prohibit or prevent them",
+    cs: "zakázat někomu něco",
+    example: "He was barred from practicing law for five years.",
+    tip: "“Barred from” + gerund. Note the noun *the bar* = the legal profession, hence “disbarred” for a struck-off lawyer.",
+    situation: "Někomu bylo zakázáno vykonávat profesi." },
+
+  { id: "law2-brief-stint", theme: "business-email", register: "neutral", lessons: [15], date: "2024-07-19",
+    en: "a brief stint at the company",
+    cs: "krátké působení ve firmě",
+    tip: "“Stint” = a short period doing a job. Very useful on a CV or in an introduction: “after a brief stint in consulting…”",
+    situation: "Popište krátké pracovní působení někde." },
+
+  { id: "law2-scold", theme: "pub-social", register: "neutral", lessons: [15], date: "2024-07-19",
+    en: "to scold someone",
+    cs: "pokárat, vyhubovat",
+    tip: "Telling someone off with real disapproval. Usually an adult to a child, or a judge to a lawyer.",
+    situation: "Někdo někoho přísně pokáral." },
+
+  { id: "law2-muttering", theme: "pub-social", register: "neutral", lessons: [15], date: "2024-07-19",
+    en: "muttering — speaking quietly and indistinctly, usually in complaint",
+    cs: "mumlání, brblání",
+    tip: "Carries a hint of discontent: people mutter *under their breath* when they disagree but won't say so openly.",
+    situation: "Někdo si pro sebe nespokojeně mumlá." }
 
 ];
 
