@@ -10,12 +10,10 @@ stored on your own device.
 
 ## Use it
 
-**→ https://USERNAME.github.io/english-trainer/**
+**→ https://michalholba.github.io/english-trainer/**
 
 On iPhone: open that link in **Safari**, then **Share → Add to Home Screen**. It
 then launches full-screen and works offline.
-
-> Replace `USERNAME` above with your GitHub username once Pages is enabled.
 
 ## Two modes
 
