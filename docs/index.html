@@ -1,0 +1,2254 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>English Trainer</title>
+
+<!-- iOS home-screen install -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="English">
+<meta name="theme-color" content="#3B6FF5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1017" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233B6FF5'/%3E%3Cstop offset='1' stop-color='%237B4DFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='180' height='180' rx='40' fill='url(%23g)'/%3E%3Ctext x='90' y='126' font-family='-apple-system,Helvetica,Arial' font-size='100' font-weight='700' fill='white' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════════════
+   English Phrase Trainer — C2 business English drill
+   Single file, zero dependencies. Content lives in content.js.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  color-scheme: light dark;
+
+  --brand:       #3B6FF5;
+  --brand-2:     #7B4DFF;
+  --brand-deep:  #2450C8;
+  --grad:        linear-gradient(135deg, #3B6FF5 0%, #7B4DFF 100%);
+
+  --bg:          #F4F6FB;
+  --bg-2:        #EAEEF8;
+  --card:        #FFFFFF;
+  --text:        #131A2B;
+  --text-soft:   #5A6782;
+  --text-faint:  #8B97AF;
+  --line:        #E2E8F2;
+
+  --green:       #0E9F76;
+  --amber:       #E08600;
+  --red:         #E0455A;
+  --violet:      #7B4DFF;
+
+  --sh-sm: 0 1px 2px rgba(19,26,43,.06), 0 1px 3px rgba(19,26,43,.04);
+  --sh-md: 0 2px 4px rgba(19,26,43,.05), 0 6px 16px rgba(19,26,43,.07);
+  --sh-lg: 0 8px 28px rgba(19,26,43,.10), 0 2px 6px rgba(19,26,43,.05);
+  --sh-brand: 0 6px 18px rgba(59,111,245,.32);
+
+  --r:    18px;
+  --r-sm: 12px;
+  --pad:  16px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:         #0D1017;
+    --bg-2:       #141926;
+    --card:       #181E2A;
+    --text:       #ECF1FA;
+    --text-soft:  #A2AFC6;
+    --text-faint: #6E7C95;
+    --line:       #262E3E;
+    --brand:      #6E9BFF;
+    --brand-2:    #A98BFF;
+    --brand-deep: #3B6FF5;
+    --green:      #2BC79A;
+    --amber:      #FFA92E;
+    --red:        #FF6B7E;
+    --violet:     #A98BFF;
+    --sh-sm: 0 1px 2px rgba(0,0,0,.4);
+    --sh-md: 0 4px 14px rgba(0,0,0,.45);
+    --sh-lg: 0 10px 32px rgba(0,0,0,.55);
+    --sh-brand: 0 6px 20px rgba(59,111,245,.42);
+  }
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 17px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: contain;
+}
+
+/* soft ambient wash behind everything */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(90vw 55vh at 8% -8%,  rgba(59,111,245,.13), transparent 62%),
+    radial-gradient(85vw 50vh at 100% 0%, rgba(123,77,255,.11), transparent 60%),
+    linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 42%);
+}
+
+body {
+  min-height: 100vh; min-height: 100dvh;
+  padding: calc(var(--safe-t) + 6px) 0 calc(var(--safe-b) + 10px);
+  display: flex; flex-direction: column;
+}
+
+.wrap {
+  width: 100%; max-width: 640px;
+  margin: 0 auto; padding: 0 var(--pad);
+  flex: 1; display: flex; flex-direction: column;
+}
+
+/* ── header ───────────────────────────────────────────────────────── */
+header { display: flex; align-items: center; gap: 10px; padding: 10px 2px 16px; }
+
+.mark {
+  width: 30px; height: 30px; border-radius: 9px; flex: none;
+  background: var(--grad); box-shadow: var(--sh-brand);
+  display: grid; place-items: center;
+  color: #fff; font-weight: 800; font-size: 16px; letter-spacing: -.02em;
+}
+header h1 {
+  font-size: 18px; font-weight: 700; margin: 0;
+  letter-spacing: -.025em; flex: 1;
+}
+
+.pill {
+  font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums;
+  padding: 5px 11px; border-radius: 999px;
+  background: color-mix(in srgb, var(--brand) 13%, transparent);
+  color: var(--brand-deep); white-space: nowrap;
+}
+@media (prefers-color-scheme: dark) { .pill { color: var(--brand); } }
+
+.iconbtn {
+  border: 1px solid var(--line); background: var(--card);
+  color: var(--text-soft); border-radius: 10px;
+  min-width: 44px; height: 36px; font-size: 14px; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; padding: 0 12px; box-shadow: var(--sh-sm);
+  transition: transform .12s, background .15s;
+}
+.iconbtn:active { transform: scale(.96); background: var(--bg-2); }
+
+/* ── card ─────────────────────────────────────────────────────────── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 20px;
+  box-shadow: var(--sh-md);
+}
+
+/* ── hero ─────────────────────────────────────────────────────────── */
+.hero {
+  position: relative; overflow: hidden;
+  border-radius: var(--r); padding: 20px;
+  background: var(--grad); color: #fff;
+  box-shadow: var(--sh-brand);
+  margin-bottom: 22px;
+}
+.hero::after {
+  content: ""; position: absolute; right: -34px; top: -54px;
+  width: 190px; height: 190px; border-radius: 50%;
+  background: rgba(255,255,255,.13);
+}
+.hero::before {
+  content: ""; position: absolute; right: 42px; bottom: -66px;
+  width: 120px; height: 120px; border-radius: 50%;
+  background: rgba(255,255,255,.09);
+}
+.hero .kicker {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; opacity: .82; margin-bottom: 7px;
+}
+.hero .figs { display: flex; align-items: baseline; gap: 8px; position: relative; z-index: 1; }
+.hero .fig { font-size: 38px; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+.hero .unit { font-size: 15px; font-weight: 600; opacity: .9; }
+.hero .sub { font-size: 13.5px; opacity: .88; margin-top: 9px; position: relative; z-index: 1; }
+
+.hbar {
+  position: relative; z-index: 1;
+  margin-top: 14px; height: 6px; border-radius: 99px;
+  background: rgba(255,255,255,.26); overflow: hidden;
+}
+.hbar > i {
+  display: block; height: 100%; border-radius: 99px;
+  background: #fff; width: 0; transition: width .6s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── activity ─────────────────────────────────────────────────────── */
+.activity { padding: 16px 18px 14px; }
+.acts-row { display: flex; align-items: stretch; gap: 8px; }
+.act { flex: 1; text-align: center; }
+.act-div { width: 1px; background: var(--line); flex: none; }
+.act-v {
+  font-size: 27px; font-weight: 800; letter-spacing: -.03em; line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  background: var(--grad); -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.act-v.zero { background: none; -webkit-text-fill-color: var(--text-faint); color: var(--text-faint); }
+.act-k {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--text-faint); margin-top: 3px;
+}
+.act-s { font-size: 11.5px; color: var(--text-soft); margin-top: 4px; min-height: 14px; }
+
+.spark {
+  display: flex; align-items: flex-end; gap: 3px;
+  height: 34px; margin-top: 14px;
+}
+.spark i {
+  flex: 1; border-radius: 3px 3px 1px 1px; min-height: 3px;
+  background: color-mix(in srgb, var(--brand) 22%, transparent);
+  transition: height .4s cubic-bezier(.4,0,.2,1);
+}
+.spark i.on   { background: var(--grad); }
+.spark i.today { background: var(--grad); box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 26%, transparent); }
+.spark-cap {
+  font-size: 10.5px; color: var(--text-faint); text-align: center;
+  margin-top: 7px; letter-spacing: .03em;
+}
+
+.nostore {
+  margin-top: 12px; padding: 10px 12px; border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--amber) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--amber) 30%, transparent);
+  font-size: 12.5px; line-height: 1.45; color: var(--text);
+}
+
+/* ── section labels ───────────────────────────────────────────────── */
+.seclabel {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--text-faint);
+  margin: 22px 0 10px; padding-left: 2px;
+}
+
+/* ── mode selector ────────────────────────────────────────────────── */
+.modes { display: grid; gap: 11px; }
+.mode {
+  position: relative; display: flex; align-items: flex-start; gap: 14px;
+  padding: 17px; border-radius: var(--r);
+  border: 1.5px solid var(--line); background: var(--card);
+  cursor: pointer; text-align: left; width: 100%;
+  font: inherit; color: inherit; box-shadow: var(--sh-sm);
+  transition: border-color .18s, box-shadow .18s, transform .12s, background .18s;
+}
+.mode:active { transform: scale(.985); }
+.mode[aria-pressed="true"] {
+  border-color: transparent;
+  box-shadow: var(--sh-md), 0 0 0 2px var(--brand) inset;
+  background: color-mix(in srgb, var(--brand) 6%, var(--card));
+}
+.mode .ico {
+  width: 42px; height: 42px; flex: none; border-radius: 12px;
+  display: grid; place-items: center; font-size: 20px;
+  background: color-mix(in srgb, var(--brand) 12%, transparent);
+  transition: background .18s;
+}
+.mode[aria-pressed="true"] .ico { background: var(--grad); box-shadow: var(--sh-brand); }
+.mode b { display: block; font-size: 16px; font-weight: 700; margin-bottom: 3px; letter-spacing: -.015em; }
+.mode span.d { font-size: 13.5px; color: var(--text-soft); line-height: 1.45; display: block; }
+
+/* ── chips ────────────────────────────────────────────────────────── */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font: inherit; font-size: 13.5px; font-weight: 600;
+  padding: 9px 14px; border-radius: 999px;
+  border: 1.5px solid var(--line); background: var(--card);
+  color: var(--text-soft); cursor: pointer; box-shadow: var(--sh-sm);
+  transition: transform .12s, background .18s, color .18s, border-color .18s;
+}
+.chip:active { transform: scale(.94); }
+.chip[aria-pressed="true"] {
+  border-color: transparent; background: var(--grad); color: #fff;
+  box-shadow: var(--sh-brand);
+}
+.chip .n {
+  opacity: .62; font-size: 11.5px; margin-left: 5px;
+  font-variant-numeric: tabular-nums; font-weight: 700;
+}
+.chip[aria-pressed="true"] .n { opacity: .85; }
+
+/* ── primary CTA ──────────────────────────────────────────────────── */
+.start {
+  margin-top: 26px; width: 100%;
+  font: inherit; font-size: 17px; font-weight: 700; letter-spacing: -.01em;
+  padding: 17px; border-radius: 15px; border: 0;
+  background: var(--grad); color: #fff; cursor: pointer;
+  box-shadow: var(--sh-brand);
+  transition: transform .12s, box-shadow .18s, filter .18s;
+}
+.start:active { transform: scale(.985); filter: brightness(.95); }
+.start:disabled { opacity: .45; box-shadow: none; }
+
+/* ── drill screen ─────────────────────────────────────────────────── */
+.bar {
+  height: 5px; background: var(--line); border-radius: 99px;
+  overflow: hidden; margin-bottom: 16px;
+}
+.bar > i {
+  display: block; height: 100%; border-radius: 99px;
+  background: var(--grad); width: 0;
+  transition: width .45s cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(10px) scale(.995); }
+  to   { opacity: 1; transform: none; }
+}
+.anim { animation: cardIn .3s cubic-bezier(.2,.7,.3,1) both; }
+
+@keyframes revealIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.meta {
+  display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+  font-size: 11.5px; color: var(--text-faint); margin-bottom: 14px;
+}
+.tag {
+  font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+  background: var(--bg-2); border: 1px solid transparent; color: var(--text-soft);
+  letter-spacing: .01em;
+}
+.tag.reg-casual      { color: var(--violet); background: color-mix(in srgb, var(--violet) 13%, transparent); }
+.tag.reg-neutral     { color: var(--text-soft); }
+.tag.reg-client-safe { color: var(--green);  background: color-mix(in srgb, var(--green) 14%, transparent); }
+.tag.reg-idiom       { color: var(--amber);  background: color-mix(in srgb, var(--amber) 15%, transparent); }
+.tag.reg-formal      { color: var(--brand-deep); background: color-mix(in srgb, var(--brand) 13%, transparent); }
+.tag.reg-slang       { color: var(--red);    background: color-mix(in srgb, var(--red) 13%, transparent); }
+@media (prefers-color-scheme: dark) { .tag.reg-formal { color: var(--brand); } }
+
+.en {
+  font-size: 26px; line-height: 1.3; font-weight: 750;
+  letter-spacing: -.03em; margin: 0 0 11px;
+  background: var(--grad); -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.cs { font-size: 17px; color: var(--text-soft); margin: 0 0 2px; line-height: 1.45; }
+
+.block { margin-top: 17px; padding-top: 16px; border-top: 1px solid var(--line); }
+.block .h {
+  font-size: 11px; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--text-faint); margin-bottom: 6px;
+}
+.block .b { font-size: 15.5px; line-height: 1.55; }
+.ex {
+  font-style: italic; color: var(--text-soft);
+  padding-left: 13px; border-left: 3px solid color-mix(in srgb, var(--brand) 32%, transparent);
+}
+.tip { color: var(--text); }
+
+.warn {
+  margin-top: 16px; padding: 13px 15px; border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--amber) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--amber) 28%, transparent);
+  font-size: 14.5px; line-height: 1.5;
+}
+.warn .h {
+  font-size: 11px; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--amber); margin-bottom: 5px;
+}
+.warn s { color: var(--text-faint); text-decoration-thickness: 1.5px; }
+.warn b { font-weight: 700; }
+
+/* testing */
+.situation { font-size: 21px; line-height: 1.4; font-weight: 650; letter-spacing: -.02em; margin: 8px 0 4px; }
+.ask {
+  font-size: 13.5px; color: var(--text-faint); margin-top: 14px;
+  display: flex; align-items: center; gap: 7px;
+}
+.ask::before { content: "🗣"; font-size: 15px; }
+
+.answer {
+  margin-top: 20px; padding-top: 18px;
+  border-top: 2px dashed var(--line);
+  animation: revealIn .28s cubic-bezier(.2,.7,.3,1) both;
+}
+
+.variants { margin: 11px 0 0; padding-left: 17px; }
+.variants li { font-size: 15px; color: var(--text-soft); margin-bottom: 5px; line-height: 1.45; }
+.variants li::marker { color: var(--brand); }
+
+/* actions */
+.actions { display: grid; gap: 10px; margin-top: 18px; }
+.grades  { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 9px; }
+.btn {
+  font: inherit; font-size: 16px; font-weight: 700; letter-spacing: -.01em;
+  padding: 15px 12px; border-radius: 14px;
+  border: 1.5px solid var(--line); background: var(--card);
+  color: var(--text); cursor: pointer; text-align: center;
+  box-shadow: var(--sh-sm);
+  transition: transform .12s, filter .18s, background .18s;
+}
+.btn:active { transform: scale(.97); }
+.btn.primary {
+  background: var(--grad); border-color: transparent; color: #fff;
+  box-shadow: var(--sh-brand);
+}
+.btn.g-got    { border-color: color-mix(in srgb, var(--green) 45%, transparent); color: var(--green);
+                background: color-mix(in srgb, var(--green) 7%, var(--card)); }
+.btn.g-nearly { border-color: color-mix(in srgb, var(--amber) 45%, transparent); color: var(--amber);
+                background: color-mix(in srgb, var(--amber) 7%, var(--card)); }
+.btn.g-miss   { border-color: color-mix(in srgb, var(--red) 45%, transparent); color: var(--red);
+                background: color-mix(in srgb, var(--red) 7%, var(--card)); }
+.grades .btn { font-size: 14.5px; padding: 13px 4px; }
+.grades .btn small {
+  display: block; font-size: 10.5px; font-weight: 600;
+  opacity: .72; margin-top: 3px; letter-spacing: .02em;
+}
+
+/* ── done ─────────────────────────────────────────────────────────── */
+.done { text-align: center; padding: 36px 20px; }
+.done .big { font-size: 52px; margin-bottom: 8px; line-height: 1; }
+.done h2 { margin: 0 0 7px; font-size: 22px; font-weight: 750; letter-spacing: -.02em; }
+.done p  { color: var(--text-soft); margin: 0 0 22px; font-size: 15px; }
+
+.ring { margin: 0 auto 18px; width: 116px; height: 116px; position: relative; }
+.ring svg { transform: rotate(-90deg); display: block; }
+.ring .track { stroke: var(--line); }
+.ring .fill  { stroke: url(#ringGrad); stroke-linecap: round;
+               transition: stroke-dashoffset .9s cubic-bezier(.4,0,.2,1); }
+.ring .pct {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-size: 28px; font-weight: 800; letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stats { display: flex; justify-content: center; gap: 12px; margin-bottom: 24px; }
+.stat {
+  flex: 1; max-width: 96px; padding: 13px 8px;
+  border-radius: var(--r-sm); background: var(--bg-2);
+}
+.stat .v { font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.stat .k {
+  font-size: 10.5px; color: var(--text-faint); text-transform: uppercase;
+  letter-spacing: .07em; font-weight: 700; margin-top: 2px;
+}
+
+.hidden { display: none !important; }
+
+footer { text-align: center; font-size: 12px; color: var(--text-faint); padding: 20px 0 6px; }
+footer a { color: var(--brand); text-decoration: none; font-weight: 600; }
+footer a:active { opacity: .6; }
+
+@media (max-width: 380px) {
+  .en { font-size: 23px; }
+  .situation { font-size: 19px; }
+  .hero .fig { font-size: 33px; }
+  .grades .btn { font-size: 13.5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="mark">E</span>
+    <h1 id="title">English Trainer</h1>
+    <span class="pill" id="pill"></span>
+    <button class="iconbtn hidden" id="quit" title="End session">Done</button>
+  </header>
+
+  <!-- ══ HOME ══ -->
+  <main id="home">
+    <section class="hero">
+      <div class="kicker">Ready to practice</div>
+      <div class="figs">
+        <span class="fig" id="h-due">0</span>
+        <span class="unit" id="h-unit">phrases due</span>
+      </div>
+      <div class="sub" id="h-sub"></div>
+      <div class="hbar"><i id="h-bar"></i></div>
+    </section>
+
+    <div class="seclabel">Activity</div>
+    <section class="card activity">
+      <div class="acts-row">
+        <div class="act">
+          <div class="act-v" id="a-week">0</div>
+          <div class="act-k">Last 7 days</div>
+          <div class="act-s" id="a-week-sub">&nbsp;</div>
+        </div>
+        <div class="act-div"></div>
+        <div class="act">
+          <div class="act-v" id="a-month">0</div>
+          <div class="act-k">Last 30 days</div>
+          <div class="act-s" id="a-month-sub">&nbsp;</div>
+        </div>
+      </div>
+      <div class="spark" id="spark" aria-hidden="true"></div>
+      <div class="spark-cap" id="spark-cap"></div>
+    </section>
+
+    <div class="seclabel">Mode</div>
+    <div class="modes">
+      <button class="mode" id="m-learn" aria-pressed="true">
+        <span class="ico">📖</span>
+        <span>
+          <b>Learning</b>
+          <span class="d">Phrases in random order with Czech, register, an example and a usage tip.</span>
+        </span>
+      </button>
+      <button class="mode" id="m-test" aria-pressed="false">
+        <span class="ico">🎯</span>
+        <span>
+          <b>Testing</b>
+          <span class="d">A situation in Czech — say it in English, then reveal and grade yourself.</span>
+        </span>
+      </button>
+    </div>
+
+    <div class="seclabel">Theme</div>
+    <div class="chips" id="themes"></div>
+
+    <div class="seclabel">Order</div>
+    <div class="chips" id="orders"></div>
+
+    <button class="start" id="start">Start</button>
+    <footer id="foot"></footer>
+  </main>
+
+  <!-- ══ DRILL ══ -->
+  <main id="drill" class="hidden">
+    <div class="bar"><i id="prog"></i></div>
+    <div class="card" id="cardbox"></div>
+    <div class="actions" id="acts"></div>
+  </main>
+
+  <!-- ══ DONE ══ -->
+  <main id="finish" class="hidden">
+    <div class="card done" id="donebox"></div>
+  </main>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   English Phrase Trainer — content repository
+   ───────────────────────────────────────────────────────────────────────
+   Source: Michal's OneNote English lesson notes (exported to PDF).
+   All phrases corrected to present-day American business English.
+
+   ADDING A LESSON
+     1. Append a LESSONS entry. `date` comes from the OneNote header stamp
+        on page 1 ("Friday 31 July 2026") — NOT from the filename, which is
+        not reliably chronological.
+     2. Append PHRASES. If a phrase already exists, do NOT duplicate it:
+        add the lesson id to its `lessons[]` and bump `date` to the newer
+        lesson. Later lessons revisit topics to go deeper, so the newer
+        wording wins.
+     3. `id` is a stable slug and the dedup key. Never renumber it —
+        the user's spaced-repetition progress is keyed to it.
+
+   register: casual | neutral | client-safe | formal | idiom | slang
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* NOTE: `var`, not `const`, and explicitly attached to window below.
+   Top-level `const` creates a script-scoped binding that is NOT a property of
+   window; some WebKit/iOS contexts do not share that lexical scope between
+   separate <script> blocks, leaving PHRASES undefined in the app block and the
+   UI dead. `var` + explicit window assignment works in every context. */
+var LESSONS = [
+  { id: 1,  title: "Conference",              date: "2024-12-13", dateSource: "onenote-header", source: "1 conference.pdf" },
+  { id: 2,  title: "Running a Meeting",       date: "2025-01-10", dateSource: "onenote-header", source: "2 running a meeting (lesson 2+3+4).pdf" },
+  { id: 3,  title: "Disagreements",           date: "2025-02-28", dateSource: "onenote-header", source: "3 Negotiations and disagreements.pdf" },
+  { id: 4,  title: "Legal",                   date: "2025-05-09", dateSource: "onenote-header", source: " 4 Legal.pdf" },
+  { id: 5,  title: "Pub English",             date: "2025-07-25", dateSource: "onenote-header", source: "5 Pub English .pdf" },
+  { id: 6,  title: "Networking",              date: "2025-10-17", dateSource: "onenote-header", source: "6 Networking .pdf" },
+  { id: 7,  title: "Financial English",       date: "2025-12-12", dateSource: "onenote-header", source: " 7 Financial English .pdf" },
+  { id: 8,  title: "Advanced Business",       date: "2026-03-13", dateSource: "onenote-header", source: "8) Advanced business phrases.pdf" },
+  { id: 11, title: "Crime & Punishment",      date: "2026-03-14", dateSource: "onenote-header", source: "11) Trestne ciny.pdf" },
+  { id: 9,  title: "Negotiations",            date: "2026-03-20", dateSource: "onenote-header", source: "9 Negotiations.pdf" },
+  { id: 10, title: "Restaurant",              date: "2026-07-31", dateSource: "onenote-header", source: "10) Restaurant.pdf" }
+];
+
+var PHRASES = [
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 10 — Restaurant / business dinner  (2026-07-31)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "greet-heard-a-lot", theme: "small-talk", register: "neutral", lessons: [10], date: "2026-07-31",
+    en: "I've heard a lot about you.",
+    cs: "Hodně jsem o vás slyšel.",
+    example: "— I'm Michal. I've heard a lot about you. Nice to finally meet you.",
+    tip: "Standard warm opener. The natural reply is “All good things, I hope.” — that exchange is almost a ritual in American business settings.",
+    situation: "Poprvé se osobně potkáváte s někým, o kom vám kolegové vyprávěli. Pozdravte ho.",
+    variants: ["I've heard great things about you.", "I've heard so much about you."] },
+
+  { id: "greet-all-good-things", theme: "small-talk", register: "neutral", lessons: [10], date: "2026-07-31",
+    en: "All good things, I hope.",
+    cs: "Snad jen to dobré.",
+    original: "I'm sure I was good",
+    example: "— I've heard a lot about you. — All good things, I hope.",
+    tip: "The fixed idiomatic reply. Your note had “I'm sure I was good”, which isn't idiomatic — use this or “Only the good parts, I hope.”",
+    situation: "Někdo vám řekne, že o vás hodně slyšel. Odpovězte vtipně a skromně.",
+    variants: ["Only the good parts, I hope.", "Nothing too bad, I hope."] },
+
+  { id: "smalltalk-nice-spot", theme: "small-talk", register: "casual", lessons: [10], date: "2026-07-31",
+    en: "This is a pretty nice spot. Have you guys been here before?",
+    cs: "Je to tu pěkné. Byli jste tu už někdy?",
+    example: "— This is a pretty nice spot. Have you guys been here before? — First time, actually.",
+    tip: "“Spot” is warmer and less formal than “place” or “venue”. Reliable opener in a restaurant — it hands them an easy answer.",
+    situation: "Sedíte v restauraci s klienty. Prolomte ticho poznámkou o podniku." },
+
+  { id: "smalltalk-tell-me-more", theme: "small-talk", register: "client-safe", lessons: [10], date: "2026-07-31",
+    en: "So tell me more — what are you working on at the moment? John told me a little, but I'd like to hear it from you.",
+    cs: "Povězte mi víc — na čem teď pracujete? John mi něco řekl, ale rád bych to slyšel od vás.",
+    tip: "Naming the person who briefed you signals you did your homework without showing off. “Hear it from you” flatters them into detail.",
+    situation: "Chcete, aby klient začal mluvit o své práci. Zeptejte se ho tak, aby se rozpovídal." },
+
+  { id: "smalltalk-keeping-busy", theme: "small-talk", register: "casual", lessons: [10], date: "2026-07-31",
+    en: "What's keeping you busy these days?",
+    cs: "Čím se teď hlavně zabýváte?",
+    tip: "Softer than “What are you working on?” — it invites either work or personal news, so it's safe early in a dinner.",
+    situation: "Chcete se nezávazně zeptat, co teď protějšek dělá.",
+    variants: ["What's been keeping you busy?", "What's the latest with you guys? Fill me in."] },
+
+  { id: "biz-humming-along", theme: "answering-how-is-business", register: "casual", lessons: [10], date: "2026-07-31",
+    en: "Things are humming along.",
+    cs: "Jede to, daří se.",
+    example: "— How's business? — Yeah, things are humming along.",
+    tip: "Warm and deliberately understated. Great with someone you know; for a first meeting prefer “We've had a strong quarter.”",
+    situation: "Někdo se ptá, jak jde byznys. Jde to dobře a vy chcete znít uvolněně, ne chlubivě.",
+    variants: ["Things are going well.", "We're in good shape."] },
+
+  { id: "biz-whirlwind", theme: "answering-how-is-business", register: "idiom", lessons: [10], date: "2026-07-31",
+    en: "It's been a whirlwind lately.",
+    cs: "Poslední dobou je to jeden velký shon.",
+    tip: "Positive-to-neutral: busy and intense, not out of control. “Complete chaos” is the stronger, more negative version.",
+    situation: "Popište hektické období tak, aby to znělo spíš vzrušeně než stěžovavě.",
+    variants: ["It's been nonstop.", "Things have been hectic."] },
+
+  { id: "biz-solid-quarter", theme: "answering-how-is-business", register: "client-safe", lessons: [10], date: "2026-07-31",
+    en: "We had a solid quarter, but I want to see even better.",
+    cs: "Měli jsme slušný kvartál, ale chci vidět ještě lepší výsledky.",
+    tip: "“Solid” = good but not spectacular. Pairing it with ambition is the standard American register — confident without bragging.",
+    situation: "Kvartál dopadl dobře. Řekněte to sebevědomě, ale zároveň ambiciózně." },
+
+  { id: "biz-bumps-in-road", theme: "answering-how-is-business", register: "idiom", lessons: [10], date: "2026-07-31",
+    en: "We've hit some bumps in the road, but we'll figure it out.",
+    cs: "Narazili jsme na pár překážek, ale zvládneme to.",
+    tip: "The go-to way to admit trouble without alarming anyone. Often followed by “but hey, that's business.”",
+    situation: "Máte problémy, ale nechcete znít pesimisticky před klientem.",
+    variants: ["We're navigating some challenges, but we'll figure it out.", "We've had a few setbacks, but nothing we can't handle."] },
+
+  { id: "biz-tell-me-about-it", theme: "building-rapport", register: "idiom", lessons: [10, 5], date: "2026-07-31",
+    en: "Oh man, tell me about it.",
+    cs: "No to mi povídej.",
+    example: "— The market's been unpredictable lately. — Oh man, tell me about it.",
+    tip: "Means “I know exactly, I've lived it” — emphatic agreement, NOT a request for information. Very common; sounds fully native.",
+    situation: "Někdo si stěžuje na něco, co důvěrně znáte i vy. Vyjádřete souhlas.",
+    variants: ["I hear you.", "You're telling me.", "Don't get me started."] },
+
+  { id: "rapport-quite-a-journey", theme: "building-rapport", register: "client-safe", lessons: [10], date: "2026-07-31",
+    en: "That sounds like quite a journey.",
+    cs: "To zní jako pěkná cesta / jízda.",
+    tip: "Warm, slightly admiring, and safe with anyone. Use it when someone describes a long or difficult path.",
+    situation: "Klient právě popsal dlouhou a náročnou cestu firmy. Zareagujte uznale.",
+    variants: ["That sounds like quite a story.", "That's quite a ride."] },
+
+  { id: "rapport-i-can-see-why", theme: "building-rapport", register: "neutral", lessons: [10], date: "2026-07-31",
+    en: "I can see why.",
+    cs: "Chápu proč.",
+    tip: "Short, warm, and non-judgmental. Pairs naturally with “No judgment here.” Signals you accept their reasoning without evaluating it.",
+    situation: "Někdo vysvětlí nepopulární rozhodnutí. Dejte najevo pochopení bez hodnocení.",
+    variants: ["That makes sense.", "No judgment here.", "Yeah, I can imagine."] },
+
+  { id: "pivot-that-reminds-me", theme: "pivoting-to-business", register: "client-safe", lessons: [10], date: "2026-07-31",
+    en: "Oh, that actually reminds me —",
+    cs: "Á, to mi vlastně připomíná —",
+    tip: "The smoothest pivot there is: it makes the business topic feel like it surfaced naturally from their story rather than from your agenda.",
+    situation: "Chcete plynule přejít od small talku k byznysu, aniž by to bylo znát." },
+
+  { id: "pivot-do-you-mind-switch", theme: "pivoting-to-business", register: "client-safe", lessons: [10], date: "2026-07-31",
+    en: "Do you mind if I switch to a business topic for a moment?",
+    cs: "Nevadí, když na chvíli přejdu k pracovnímu tématu?",
+    tip: "Asking permission is what makes it polite. Your note had “Let's switch to business” — that's blunt in American English; this version is client-safe.",
+    original: "Let's switch to business",
+    situation: "U večeře chcete slušně otevřít pracovní téma. Požádejte o svolení." },
+
+  { id: "pivot-while-i-have-you", theme: "pivoting-to-business", register: "neutral", lessons: [10], date: "2026-07-31",
+    en: "While I have you — there's one thing I wanted to run by you.",
+    cs: "Když už vás mám tady — chtěl jsem s vámi něco probrat.",
+    original: "Since we're speaking",
+    tip: "“Since we're speaking” isn't idiomatic. Use “While I have you” or “Since we're on the subject” — both are extremely common.",
+    situation: "Využijte příležitosti, že je protějšek právě k dispozici, a nadhoďte téma.",
+    variants: ["Since we're on the subject...", "While we're on it..."] },
+
+  { id: "pivot-iron-it-out", theme: "pivoting-to-business", register: "idiom", lessons: [10], date: "2026-07-31",
+    en: "Maybe we can iron this out before dessert.",
+    cs: "Možná to vyladíme, než přinesou dezert.",
+    tip: "“Iron out” = smooth out remaining problems. The dessert reference keeps a business push light — a good tension-breaker at dinner.",
+    situation: "U večeře chcete vyřešit poslední detail a odlehčit to vtipem." },
+
+  { id: "pivot-talk-briefly", theme: "pivoting-to-business", register: "neutral", lessons: [10], date: "2026-07-31",
+    en: "We've got about five minutes, so let's talk business briefly.",
+    cs: "Máme asi pět minut, tak pojďme krátce k byznysu.",
+    original: "let's talk shortly about business",
+    tip: "FALSE FRIEND: “shortly” means *soon*, not *briefly*. “I'll talk shortly” = I'll speak in a moment. Always use “briefly” for krátce.",
+    situation: "Zbývá málo času. Navrhněte, ať krátce proberete práci." },
+
+  { id: "pivot-not-cut-short", theme: "pivoting-to-business", register: "client-safe", lessons: [10], date: "2026-07-31",
+    en: "I don't want to cut this conversation short, but —",
+    cs: "Nerad bych ten rozhovor utínal, ale —",
+    original: "I don't want to cut this conversation off",
+    tip: "“Cut short” = end earlier than planned (polite). “Cut off” = interrupt someone mid-sentence (rude). Different meanings — don't mix them.",
+    situation: "Musíte ukončit příjemný rozhovor, ale nechcete být neslušní.",
+    variants: ["I don't mean to cut you off, but...", "I hate to interrupt, but..."] },
+
+  { id: "grammar-a-few-vs-few", theme: "grammar-traps", register: "neutral", lessons: [10], date: "2026-07-31",
+    en: "a few = several · few = very few (not enough)",
+    cs: "„a few\" = několik (pozitivní) · „few\" = málo, skoro žádné (negativní)",
+    example: "I've read a few books on corporate law. (several) — vs — I've read few books on corporate law. (almost none)",
+    tip: "Dropping “a” flips the meaning from positive to negative. “We have a few clients in Europe” = fine. “We have few clients in Europe” = a problem. Same for a little / little.",
+    situation: "Vysvětlete rozdíl mezi „a few\" a „few\" na příkladu s klienty." },
+
+  { id: "grammar-a-little", theme: "grammar-traps", register: "neutral", lessons: [10], date: "2026-07-31",
+    en: "I know a little. (uncountable) / I only have a few clients. (countable)",
+    cs: "Trochu to znám. / Mám jen pár klientů.",
+    tip: "“A little” goes with uncountable nouns (knowledge, time, money); “a few” with countable ones (books, clients, contacts).",
+    situation: "Řekněte, že něco umíte jen trochu — a pak že máte jen pár klientů." },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 9 — Negotiations  (2026-03-20)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "neg-step-back-frame", theme: "negotiating", register: "client-safe", lessons: [9], date: "2026-03-20",
+    en: "Let's take a step back and frame what we're actually trying to solve here.",
+    cs: "Pojďme o krok zpět a ujasněme si, co vlastně řešíme.",
+    tip: "Takes control of the room without sounding controlling. Ideal when a negotiation has drifted into detail too early.",
+    situation: "Jednání se zamotalo do detailů. Převezměte řízení, aniž byste působili autoritativně." },
+
+  { id: "neg-align-objective", theme: "negotiating", register: "client-safe", lessons: [9], date: "2026-03-20",
+    en: "Before we get into positions, let's align on the objective.",
+    cs: "Než se zakopeme v pozicích, shodněme se na cíli.",
+    tip: "“Positions” vs “objective” is classic negotiation framing — it moves people off entrenched demands toward shared goals.",
+    situation: "Obě strany začínají zaujímat pozice. Vraťte diskuzi ke společnému cíli." },
+
+  { id: "neg-pressure-test", theme: "negotiating", register: "formal", lessons: [9, 8], date: "2026-03-20",
+    en: "Can we pause and pressure-test that assumption?",
+    cs: "Můžeme se zastavit a otestovat, jestli ten předpoklad obstojí?",
+    tip: "“Pressure-test” = stress an idea to see if it holds. Very current in senior American business English; sounds analytical, not confrontational.",
+    situation: "Někdo staví argument na nejistém předpokladu. Zpochybněte ho elegantně.",
+    variants: ["Let's pressure-test that assumption.", "Let's stress-test the model."] },
+
+  { id: "neg-didnt-land", theme: "disagreeing-politely", register: "client-safe", lessons: [9], date: "2026-03-20",
+    en: "I'm not sure that point fully landed.",
+    cs: "Nejsem si jistý, že ta myšlenka úplně došla.",
+    tip: "Calls out poor listening without accusing anyone. “Land” (of a point) = be understood and absorbed. Extremely useful and very diplomatic.",
+    situation: "Protistrana zjevně neposlouchala váš argument. Upozorněte na to slušně.",
+    variants: ["Let me make sure that was properly understood.", "I think we may be moving ahead without fully digesting that."] },
+
+  { id: "neg-not-rush", theme: "negotiating", register: "client-safe", lessons: [9], date: "2026-03-20",
+    en: "I'd rather take a moment and get this right than move quickly and miss something.",
+    cs: "Radši si dám chvilku a udělám to pořádně, než abych spěchal a něco přehlédl.",
+    tip: "A power move disguised as diligence — slowing things down is hard to argue against when framed as care for quality.",
+    situation: "Tlačí na vás, ať rychle rozhodnete. Zpomalte jednání.",
+    variants: ["Let's not rush to an answer here.", "Let's sit with that for a second."] },
+
+  { id: "neg-not-convinced", theme: "disagreeing-politely", register: "client-safe", lessons: [9], date: "2026-03-20",
+    en: "I'm not convinced that gets us where we need to be.",
+    cs: "Nejsem přesvědčen, že nás to dostane tam, kam potřebujeme.",
+    tip: "Controlled pushback: rejects the proposal, not the person. Much stronger than “I disagree” while staying entirely professional.",
+    situation: "Návrh protistrany nestačí. Odmítněte ho věcně a bez konfrontace.",
+    variants: ["That doesn't quite align with our priorities.", "There's a gap there we need to address."] },
+
+  { id: "neg-justify-internally", theme: "disagreeing-politely", register: "client-safe", lessons: [9], date: "2026-03-20",
+    en: "I'd struggle to justify that internally.",
+    cs: "Těžko bych to obhájil u nás interně.",
+    tip: "Deflects refusal onto your organization rather than yourself — you stay allied with them while still saying no. A negotiation staple.",
+    situation: "Musíte odmítnout nabídku, ale chcete zůstat na jejich straně.",
+    variants: ["That's a tough sell internally.", "We'd need a stronger case to support that."] },
+
+  { id: "neg-directionally-aligned", theme: "negotiating", register: "formal", lessons: [9, 8], date: "2026-03-20",
+    en: "I think we're directionally aligned.",
+    cs: "Myslím, že se shodujeme ve směru.",
+    tip: "Agrees on direction while reserving the details — a way to bank progress without conceding specifics. Very senior-sounding.",
+    situation: "Shodujete se v principu, ale detaily ještě nejsou dohodnuté.",
+    variants: ["We're not far apart, but the details matter.", "Conceptually that makes sense — execution is where we need clarity."] },
+
+  { id: "neg-walk-me-through", theme: "negotiating", register: "neutral", lessons: [9], date: "2026-03-20",
+    en: "Can you walk me through the thinking there?",
+    cs: "Můžete mě provést tou úvahou?",
+    tip: "Extracts reasoning without challenging it. Often reveals a weak assumption you can address later — far more effective than “Why?”",
+    situation: "Chcete pochopit, jak protistrana došla ke svému číslu.",
+    variants: ["What's driving that assumption?", "How did you arrive at that number?"] },
+
+  { id: "neg-see-logic-disagree", theme: "disagreeing-politely", register: "formal", lessons: [9], date: "2026-03-20",
+    en: "I see the logic — I just don't agree with the conclusion.",
+    cs: "Chápu tu logiku — jen nesouhlasím se závěrem.",
+    tip: "Elite-level disagreement: you validate their reasoning and reject the outcome. Nearly impossible to take personally.",
+    situation: "Argument protistrany dává smysl, ale závěr je špatný. Nesouhlaste.",
+    variants: ["That's a fair point, but I think it leads us somewhere different.", "I understand the argument — I'm not sure it holds under scrutiny."] },
+
+  { id: "neg-hung-up", theme: "negotiating", register: "idiom", lessons: [9], date: "2026-03-20",
+    en: "Let's not get too hung up on that.",
+    cs: "Nezasekněme se na tom moc.",
+    example: "Let's not get too hung up on the exact numbers right now.",
+    tip: "“Hung up on” = stuck on a detail. Redirects without dismissing the point outright.",
+    situation: "Jednání se zaseklo na nepodstatném detailu. Posuňte ho dál." },
+
+  { id: "neg-tough-sell", theme: "negotiating", register: "idiom", lessons: [9, 8], date: "2026-03-20",
+    en: "That's a tough sell.",
+    cs: "To se bude těžko prosazovat.",
+    example: "A 20% increase is going to be a tough sell internally.",
+    tip: "Signals resistance without refusing outright — it leaves room for them to improve the offer.",
+    situation: "Návrh je pro vaše vedení těžko přijatelný. Naznačte to." },
+
+  { id: "neg-not-there-yet", theme: "negotiating", register: "neutral", lessons: [9, 8], date: "2026-03-20",
+    en: "We're not quite there yet.",
+    cs: "Ještě tam úplně nejsme.",
+    example: "The pricing is close, but we're not quite there yet.",
+    tip: "Says no to the current offer while confirming progress — keeps the deal alive and invites a better number.",
+    situation: "Cena se blíží, ale ještě není dost dobrá. Řekněte to." },
+
+  { id: "neg-whats-the-upside", theme: "negotiating", register: "neutral", lessons: [9], date: "2026-03-20",
+    en: "What's the upside for us?",
+    cs: "Co z toho máme my?",
+    tip: "“Upside” = potential gain. Direct but not rude — standard American deal language.",
+    situation: "Než něco odsouhlasíte, zeptejte se, co z toho máte." },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 8 — Advanced business phrases (C2)  (2026-03-13)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "adv-wrong-problem", theme: "strategic-framing", register: "formal", lessons: [8], date: "2026-03-13",
+    en: "We may be solving for the wrong problem.",
+    cs: "Možná řešíme špatný problém.",
+    tip: "“Solve for X” (from math) is standard in American strategy talk. Challenges the whole framing without blaming anyone.",
+    situation: "Tým řeší symptom, ne příčinu. Upozorněte na to." },
+
+  { id: "adv-zoom-out", theme: "strategic-framing", register: "neutral", lessons: [8], date: "2026-03-13",
+    en: "Let's zoom out for a moment.",
+    cs: "Pojďme se na chvíli podívat z většího nadhledu.",
+    tip: "Lifts the discussion from detail to big picture. Its opposite, “let's zoom in”, works the same way.",
+    situation: "Diskuze se utápí v detailech. Vraťte ji k celkovému obrazu.",
+    variants: ["We're looking at this through too narrow a lens.", "Let's look at this from a few different angles."] },
+
+  { id: "adv-signal-noise", theme: "strategic-framing", register: "formal", lessons: [8, 9], date: "2026-03-20",
+    en: "Let's separate the signal from the noise.",
+    cs: "Oddělme podstatné od šumu.",
+    tip: "From information theory, now standard business vocabulary. Means: ignore distractions, focus on what actually carries meaning.",
+    situation: "Máte příliš mnoho dat a málo jasnosti. Navrhněte, ať se soustředíte na podstatné." },
+
+  { id: "adv-second-order", theme: "strategic-framing", register: "formal", lessons: [8], date: "2026-03-13",
+    en: "What's the second-order effect?",
+    cs: "Jaký to bude mít druhotný dopad?",
+    tip: "Second-order = the consequence of the consequence. Asking this marks you as a systems thinker; very senior register.",
+    situation: "Rozhodnutí vypadá dobře na první pohled. Zeptejte se na nepřímé důsledky." },
+
+  { id: "adv-what-true", theme: "decision-making", register: "formal", lessons: [8, 9], date: "2026-03-20",
+    en: "What would have to be true for this to work?",
+    cs: "Co by muselo platit, aby to fungovalo?",
+    tip: "A famous strategy-consulting question. It converts a vague debate into a testable list of assumptions.",
+    situation: "Návrh je optimistický. Obraťte diskuzi na jeho předpoklady." },
+
+  { id: "adv-cost-inaction", theme: "decision-making", register: "formal", lessons: [8], date: "2026-03-13",
+    en: "What's the cost of inaction?",
+    cs: "Kolik nás bude stát, když neuděláme nic?",
+    tip: "Reframes risk: doing nothing is also a decision with a price. Powerful against excessive caution.",
+    situation: "Vedení váhá s rozhodnutím. Otočte perspektivu na cenu nečinnosti." },
+
+  { id: "adv-walk-away", theme: "decision-making", register: "formal", lessons: [8], date: "2026-03-13",
+    en: "What's our walk-away point?",
+    cs: "Kde je náš bod, kdy od jednání odejdeme?",
+    tip: "Core negotiation concept (your BATNA threshold). Knowing it before you enter the room is what gives you leverage.",
+    situation: "Před jednáním si potřebujete ujasnit hranici, za kterou nejdete." },
+
+  { id: "adv-optimizing-for", theme: "decision-making", register: "formal", lessons: [8], date: "2026-03-13",
+    en: "What are we optimizing for?",
+    cs: "Co je vlastně naše priorita?",
+    tip: "Surfaces conflicting goals (speed vs. cost vs. quality) that are usually the real reason a team is stuck.",
+    situation: "Tým se nemůže shodnout. Zeptejte se, co je vlastně cílem." },
+
+  { id: "adv-sanity-check", theme: "decision-making", register: "neutral", lessons: [8], date: "2026-03-13",
+    en: "Let's sanity-check the numbers.",
+    cs: "Pojďme si ta čísla ověřit selským rozumem.",
+    tip: "A quick plausibility check, not a full audit. Casual enough for any meeting, and it doesn't accuse anyone of error.",
+    situation: "Čísla vypadají podezřele. Navrhněte rychlou kontrolu.",
+    variants: ["Let's double-check this against other reports.", "Let's triangulate the data."] },
+
+  { id: "adv-inflection-point", theme: "strategy-growth", register: "formal", lessons: [8], date: "2026-03-13",
+    en: "We're approaching an inflection point.",
+    cs: "Blížíme se k bodu zlomu.",
+    tip: "The moment a trend changes direction or accelerates. Common in earnings calls and strategy decks.",
+    situation: "Firma se blíží k zásadní změně trajektorie. Popište to." },
+
+  { id: "adv-double-down", theme: "strategy-growth", register: "idiom", lessons: [8], date: "2026-03-13",
+    en: "We need to double down on this.",
+    cs: "Musíme na to vsadit ještě víc.",
+    tip: "From blackjack: increase commitment to something already working. Note it's about intensifying, not just continuing.",
+    situation: "Něco funguje. Navrhněte, ať do toho investujete ještě víc.",
+    variants: ["Let's play to our strengths."] },
+
+  { id: "adv-dont-pencil-out", theme: "financial", register: "idiom", lessons: [8], date: "2026-03-13",
+    en: "The economics don't quite pencil out.",
+    cs: "Ekonomika toho projektu nevychází.",
+    tip: "“Pencil out” = work when you actually do the math. Softer and more collegial than “this is unprofitable”.",
+    situation: "Projekt se finančně nevyplatí. Řekněte to diplomaticky.",
+    variants: ["The numbers don't add up.", "It's not commercially viable.", "The margins are too thin.", "It doesn't make financial sense."] },
+
+  { id: "adv-intellectually-honest", theme: "leadership", register: "formal", lessons: [8], date: "2026-03-13",
+    en: "Let's be intellectually honest about this.",
+    cs: "Buďme k sobě upřímní.",
+    tip: "Invites the room to drop convenient narratives. Strong but not aggressive — it appeals to shared standards.",
+    situation: "Tým si nalhává, že projekt jde dobře. Vyzvěte k upřímnosti.",
+    variants: ["Let's not kid ourselves."] },
+
+  { id: "adv-hold-the-line", theme: "leadership", register: "idiom", lessons: [8], date: "2026-03-13",
+    en: "We need to hold the line on this.",
+    cs: "Musíme si na tom stát.",
+    tip: "Military origin: don't retreat under pressure. Used for prices, standards, or principles.",
+    situation: "Tlačí na vás, ať slevíte. Trvejte na svém." },
+
+  { id: "adv-clear-ownership", theme: "leadership", register: "neutral", lessons: [8], date: "2026-03-13",
+    en: "We need clear ownership.",
+    cs: "Potřebujeme jasnou zodpovědnost.",
+    tip: "“Ownership” = one named person accountable, not shared responsibility. The standard fix for a stalled project.",
+    situation: "Úkol nemá jasného vlastníka a nikam se nehne. Pojmenujte problém.",
+    variants: ["This deserves senior-level attention.", "We need to operate with more urgency."] },
+
+  { id: "adv-over-engineering", theme: "leadership", register: "neutral", lessons: [8], date: "2026-03-13",
+    en: "We're over-engineering the solution.",
+    cs: "Děláme to zbytečně složitě.",
+    tip: "Criticizes the approach, not the people. Pairs well with “Let's avoid false precision.”",
+    situation: "Řešení je zbytečně komplikované. Řekněte to." },
+
+  { id: "adv-crux", theme: "negotiating", register: "formal", lessons: [8], date: "2026-03-13",
+    en: "Let's get to the crux of the matter.",
+    cs: "Pojďme k jádru věci.",
+    tip: "“Crux” = the decisive point everything else depends on. More precise and more senior than “the main thing”.",
+    situation: "Diskuze se točí kolem podružností. Přejděte k jádru." },
+
+  { id: "adv-non-starter", theme: "negotiating", register: "idiom", lessons: [8], date: "2026-03-13",
+    en: "That's a non-starter for us.",
+    cs: "To pro nás nepřichází v úvahu.",
+    tip: "A firm, final no — the proposal can't even begin. Use deliberately: it closes that avenue completely.",
+    situation: "Podmínka je zcela nepřijatelná. Odmítněte ji jednoznačně." },
+
+  { id: "adv-common-ground", theme: "negotiating", register: "neutral", lessons: [8, 9], date: "2026-03-20",
+    en: "Let's find the common ground.",
+    cs: "Pojďme najít společnou řeč.",
+    tip: "Standard de-escalation move when positions have hardened.",
+    situation: "Jednání se zablokovalo. Navrhněte hledání shody.",
+    variants: ["There's common ground here — we just need to tighten it."] },
+
+  { id: "adv-keep-optionality", theme: "negotiating", register: "formal", lessons: [8], date: "2026-03-13",
+    en: "Let's keep optionality.",
+    cs: "Nechme si otevřená vrátka.",
+    tip: "“Optionality” = the value of not committing yet. Finance-flavored and distinctly senior.",
+    situation: "Nechcete se zavázat příliš brzy. Navrhněte, ať si necháte možnosti." },
+
+  { id: "adv-move-quickly", theme: "negotiating", register: "client-safe", lessons: [8], date: "2026-03-13",
+    en: "We're prepared to move quickly if the conditions are right.",
+    cs: "Jsme připraveni jednat rychle, pokud budou podmínky správné.",
+    tip: "Signals genuine interest while keeping conditions attached — pressure and flexibility in one sentence.",
+    situation: "Chcete ukázat zájem, ale nezavázat se bezpodmínečně." },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 7 — Financial English  (2025-12-12)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "fin-surge", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "surge — a sudden, strong increase",
+    cs: "prudce vzrůst",
+    example: "Energy prices surged following supply disruptions in the region.",
+    tip: "Strength ladder up: edge higher < climb < gain < jump < surge < soar. “Surge” implies suddenness and volume.",
+    situation: "Ceny energií prudce vzrostly po výpadku dodávek. Popište to jako analytik." },
+
+  { id: "fin-soar", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "soar — to rise dramatically, often impressively",
+    cs: "vystřelit prudce nahoru",
+    example: "The company's share price soared after it beat earnings expectations.",
+    tip: "Stronger and more admiring than “surge”. Reserve it for genuinely striking moves.",
+    situation: "Akcie po překonání očekávání dramaticky vzrostly. Popište to." },
+
+  { id: "fin-rally", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "rally — to recover and rise after a fall",
+    cs: "zotavit se a růst po poklesu",
+    example: "Markets rallied after inflation data came in lower than expected.",
+    tip: "Implies a prior decline — a rally is always a recovery, never a rise from nothing.",
+    situation: "Trhy se po dobrých datech zotavily z poklesu. Popište to." },
+
+  { id: "fin-edge-higher", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "edge higher / edge lower — to move slightly up or down",
+    cs: "mírně růst / mírně klesat",
+    example: "Shares edged higher as sentiment in the sector improved.",
+    tip: "The most understated verbs in the set — precise for small moves where “rose” would overstate.",
+    situation: "Akcie mírně posílily. Popište malý pohyb přesně." },
+
+  { id: "fin-tumble", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "tumble — to fall sharply and suddenly",
+    cs: "zřítit se, prudce spadnout",
+    example: "Shares tumbled after the company issued a profit warning.",
+    tip: "Strength ladder down: edge lower < slip < decline < drop < fall < tumble < plunge < crash.",
+    situation: "Akcie prudce spadly po varování o zisku. Popište to." },
+
+  { id: "fin-plunge", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "plunge — to fall suddenly and severely",
+    cs: "prudce se propadnout",
+    example: "Markets plunged on fears of a systemic banking crisis.",
+    tip: "Stronger than “tumble”. Only “crash” outranks it.",
+    situation: "Trhy se propadly kvůli obavám z bankovní krize. Popište to." },
+
+  { id: "fin-lose-ground", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "lose ground — to weaken, especially against a benchmark",
+    cs: "ztrácet pozici / oslabovat",
+    example: "The stock lost ground following rumors of regulatory scrutiny.",
+    tip: "Implies relative decline — losing versus a peer, index, or currency.",
+    situation: "Akcie oslabila kvůli fámám o regulaci. Popište to." },
+
+  { id: "fin-dislocation", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "dislocation — a breakdown between price and underlying value",
+    cs: "rozpojení ceny a skutečné hodnoty (tržní dislokace)",
+    example: "The crisis created major dislocations in credit markets.",
+    tip: "WSJ-level vocabulary. Signals stress or panic rather than normal price discovery — and often an opportunity.",
+    situation: "Krize způsobila, že ceny přestaly odpovídat hodnotě. Pojmenujte to odborně." },
+
+  { id: "fin-contagion", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "contagion — financial problems spreading from one market to others",
+    cs: "nákaza, přelévání problémů mezi trhy",
+    example: "Fears of contagion pushed global markets lower.",
+    tip: "Medical metaphor, entirely standard in finance. Used heavily in banking-crisis coverage.",
+    situation: "Problémy jedné banky se šíří na další trhy. Popište to." },
+
+  { id: "fin-impairment", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "impairment — a reduction in the recorded value of an asset",
+    cs: "snížení účetní hodnoty aktiva",
+    example: "The company took a $2 billion impairment charge.",
+    tip: "Accounting term. Note the collocation: you *take* an impairment charge.",
+    situation: "Firma musela odepsat hodnotu aktiva. Řekněte to účetní terminologií." },
+
+  { id: "fin-compression", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "compression — shrinking margins or valuations",
+    cs: "stlačení marží nebo valuací",
+    example: "Margin compression hurt profitability.",
+    tip: "Usually seen as “margin compression” or “multiple compression”.",
+    situation: "Marže se ztenčily a zasáhly ziskovost. Popište to." },
+
+  { id: "fin-repricing", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "repricing — markets adjusting prices to new information or risk",
+    cs: "přecenění trhem",
+    example: "The market is repricing growth expectations.",
+    tip: "Neutral and mechanical — describes adjustment without implying panic.",
+    situation: "Trh přehodnocuje očekávání růstu. Popište to." },
+
+  { id: "fin-suspicion-ladder", theme: "grammar-traps", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "off → fishy → questionable → dubious → concerning → suspect → opaque → dodgy → shady → crooked / illicit",
+    cs: "žebříček síly podezření od nejmírnějšího po nejsilnější",
+    tip: "Register matters more than meaning here. Analyst note: questionable / concerning / opaque / dubious. Small talk: fishy / off. Accusation: shady / dodgy / illicit. “Sus” is internet slang — never at work.",
+    situation: "Seřaďte výrazy pro podezření od nejmírnějšího po nejostřejší." },
+
+  { id: "fin-opaque-professional", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "The deal structure appears opaque and raises governance concerns.",
+    cs: "Struktura transakce působí neprůhledně a vyvolává otázky ohledně správy.",
+    original: "The deal is shady.",
+    example: "❌ The deal is shady. → ✅ The deal structure appears opaque and raises governance concerns.",
+    tip: "The professional register for suspicion: describe the structure, not the people's morals. “Shady” accuses; “opaque” observes.",
+    situation: "Transakce je podezřelá. Vyjádřete to profesionálně, ne emotivně." },
+
+  { id: "fin-numbers-questionable", theme: "financial", register: "formal", lessons: [7], date: "2025-12-12",
+    en: "The numbers look questionable and warrant further review.",
+    cs: "Ta čísla vypadají sporně a zaslouží si další prověření.",
+    original: "Something is fishy with the numbers.",
+    tip: "“Warrant further review” is the standard analyst hedge — it flags a concern without making an allegation.",
+    situation: "Čísla nesedí. Napište to jako analytik, ne jako v hospodě." },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 11 — Crime & punishment  (2026-03-14)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "law-infraction", theme: "crime-vocabulary", register: "formal", lessons: [11], date: "2026-03-14",
+    en: "infraction — the least serious offense, punished by a fine only",
+    cs: "přestupek (pokuta, žádné vězení)",
+    example: "Speeding, littering and jaywalking are infractions.",
+    tip: "No jury trial, no jail, and usually no criminal record. The bottom of the American severity ladder.",
+    situation: "Vysvětlete, co je nejmírnější kategorie porušení zákona v USA." },
+
+  { id: "law-misdemeanor", theme: "crime-vocabulary", register: "formal", lessons: [11], date: "2026-03-14",
+    en: "misdemeanor — an offense punishable by up to one year in jail",
+    cs: "přečin (až rok ve vězení typu „jail\")",
+    example: "Petty theft, public intoxication and vandalism are misdemeanors.",
+    tip: "Middle tier. The one-year line is what separates it from a felony.",
+    situation: "Vysvětlete střední kategorii trestných činů v USA." },
+
+  { id: "law-felony", theme: "crime-vocabulary", register: "formal", lessons: [11], date: "2026-03-14",
+    en: "felony — a serious crime punishable by more than a year in prison",
+    cs: "zločin (přes rok ve věznici „prison\")",
+    example: "Murder, armed robbery and arson are felonies.",
+    tip: "Carries lifelong consequences — loss of voting and firearm rights. Often graded by class (Class A is the most severe).",
+    situation: "Vysvětlete nejzávažnější kategorii trestných činů a její následky." },
+
+  { id: "law-jail-vs-prison", theme: "crime-vocabulary", register: "formal", lessons: [11], date: "2026-03-14",
+    en: "jail = short-term, pre-trial or under 1 year · prison = long-term, felony sentences",
+    cs: "jail = krátkodobé/vazba · prison = dlouhodobá věznice",
+    tip: "Czech translates both as „vězení\", so this distinction is invisible to Czech speakers — and getting it wrong is an instant giveaway.",
+    situation: "Vysvětlete rozdíl mezi „jail\" a „prison\"." },
+
+  { id: "law-charge-sentence", theme: "crime-vocabulary", register: "formal", lessons: [11], date: "2026-03-14",
+    en: "charge = the accusation · conviction = the finding of guilt · sentence = the punishment",
+    cs: "obvinění · odsouzení (uznání viny) · trest",
+    tip: "Three distinct stages, easy to confuse. You are charged, then convicted, then sentenced.",
+    situation: "Vysvětlete rozdíl mezi obviněním, odsouzením a trestem." },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 4 — Legal / contracts  (2025-05-09)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "law-power-of-attorney", theme: "legal", register: "formal", lessons: [4], date: "2025-05-09",
+    en: "power of attorney — authority to act on someone's behalf",
+    cs: "plná moc",
+    example: "She granted her lawyer power of attorney to handle her financial transactions while she was abroad.",
+    tip: "Collocation: you *grant* or *give* power of attorney. No article: “granted power of attorney”, not “a power of attorney”.",
+    situation: "Zmocnila právníka, aby za ni jednal. Popište to právní angličtinou." },
+
+  { id: "law-breach-of-contract", theme: "legal", register: "formal", lessons: [4], date: "2025-05-09",
+    en: "breach of contract — failure to perform a contractual term without legal excuse",
+    cs: "porušení smlouvy",
+    example: "They sued us for breach of contract when we failed to deliver on time.",
+    tip: "Note the preposition: sued *for* breach of contract. Also “in breach of” = currently violating.",
+    situation: "Nedodali jste včas a klient vás žaluje. Popište to." },
+
+  { id: "law-nda", theme: "legal", register: "formal", lessons: [4], date: "2025-05-09",
+    en: "non-disclosure agreement (NDA) — a contract to keep information confidential",
+    cs: "dohoda o mlčenlivosti",
+    example: "Before discussing the project, we asked them to sign an NDA.",
+    tip: "Always “sign an NDA”. In speech the abbreviation is far more common than the full phrase.",
+    situation: "Před jednáním chcete podepsat mlčenlivost. Řekněte to." },
+
+  { id: "law-non-compete", theme: "legal", register: "formal", lessons: [4], date: "2025-05-09",
+    en: "non-compete clause — a provision restricting work with competitors",
+    cs: "konkurenční doložka",
+    example: "The non-compete clause prevents him from joining a rival firm for two years.",
+    tip: "Distinct from a non-solicitation agreement, which restricts poaching clients or staff rather than employment itself.",
+    situation: "Zaměstnanec nesmí dva roky ke konkurenci. Popište tu doložku." },
+
+  { id: "law-loi", theme: "legal", register: "formal", lessons: [4], date: "2025-05-09",
+    en: "letter of intent (LOI) — a preliminary, usually non-binding understanding",
+    cs: "dopis o záměru",
+    example: "We signed a letter of intent to begin negotiations.",
+    tip: "Signals serious intent without legal commitment. Often precedes a term sheet.",
+    situation: "Podepsali jste předběžnou dohodu před vyjednáváním. Pojmenujte ji." },
+
+  { id: "law-term-sheet", theme: "legal", register: "formal", lessons: [4], date: "2025-05-09",
+    en: "term sheet — a non-binding outline of the basic terms of an investment",
+    cs: "term sheet / předběžné podmínky investice",
+    example: "The term sheet was signed before due diligence began.",
+    tip: "Standard in M&A and venture capital. Non-binding, but it frames everything that follows.",
+    situation: "Před due diligence jste podepsali základní podmínky. Pojmenujte dokument." },
+
+  { id: "law-indemnity", theme: "legal", register: "formal", lessons: [4], date: "2025-05-09",
+    en: "indemnity — an obligation to compensate another party's loss",
+    cs: "odškodnění, záruka náhrady škody",
+    example: "The supplier agreed to indemnify us against any third-party claims.",
+    tip: "Verb form: to indemnify someone *against* something. One of the most negotiated clauses in any contract.",
+    situation: "Dodavatel se zavázal krýt vás proti nárokům třetích stran. Popište to." },
+
+  { id: "law-force-majeure", theme: "legal", register: "formal", lessons: [4], date: "2025-05-09",
+    en: "force majeure — a clause releasing both parties when an extraordinary event prevents performance",
+    cs: "vyšší moc",
+    example: "The force majeure clause was invoked due to the natural disaster.",
+    tip: "Collocation: a clause is *invoked*, not “used”. Pronounced the French way: fors ma-ZHUR.",
+    situation: "Kvůli přírodní katastrofě jste se odvolali na vyšší moc. Popište to." },
+
+  { id: "law-boilerplate", theme: "legal", register: "formal", lessons: [4], date: "2025-05-09",
+    en: "boilerplate — standardized contract language",
+    cs: "standardní smluvní ustanovení",
+    example: "We reviewed the boilerplate clauses to ensure they met our needs.",
+    tip: "Slightly dismissive in tone — implies routine text. Reviewing it anyway is exactly where problems hide.",
+    situation: "Prošli jste standardní části smlouvy. Popište to." },
+
+  { id: "law-hold-harmless", theme: "legal", register: "formal", lessons: [4], date: "2025-05-09",
+    en: "hold harmless clause — a provision releasing one party from liability",
+    cs: "doložka o zproštění odpovědnosti",
+    example: "The hold harmless clause protects us from claims arising from their use.",
+    tip: "Closely related to indemnity: hold harmless prevents the claim, indemnity pays for it.",
+    situation: "Doložka vás chrání před nároky z jejich užívání. Pojmenujte ji." },
+
+  { id: "law-escalation-clause", theme: "legal", register: "formal", lessons: [4], date: "2025-05-09",
+    en: "escalation clause — a provision allowing price adjustments under set conditions",
+    cs: "doložka o úpravě ceny (eskalační doložka)",
+    example: "The escalation clause accounts for increases in material costs.",
+    tip: "Common in construction and long-term supply contracts where input costs move.",
+    situation: "Smlouva umožňuje zvýšit cenu při růstu nákladů. Pojmenujte doložku." },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 3 — Disagreements  (2025-02-28)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "dis-respect-different", theme: "disagreeing-politely", register: "client-safe", lessons: [3], date: "2025-02-28",
+    en: "I respect your opinion, but I have a different perspective.",
+    cs: "Respektuji váš názor, ale mám na to jiný pohled.",
+    tip: "The safest disagreement formula: acknowledge, then diverge. Works in almost any professional setting.",
+    situation: "Nesouhlasíte s názorem kolegy. Vyjádřete to s respektem.",
+    variants: ["I see what you're saying, but I'm not sure I agree.", "You made a good point, but I think..."] },
+
+  { id: "dis-interesting-consider", theme: "disagreeing-politely", register: "client-safe", lessons: [3], date: "2025-02-28",
+    en: "That's an interesting idea, but let's also consider —",
+    cs: "To je zajímavý nápad, ale zvažme také —",
+    tip: "Adds an alternative without rejecting theirs. Note: “interesting” here is genuinely neutral in American English, unlike British understatement.",
+    situation: "Chcete nabídnout jinou možnost, aniž byste odmítli tu jejich.",
+    variants: ["I understand your point, but have you thought about...?"] },
+
+  { id: "dis-jump-in", theme: "running-a-meeting", register: "neutral", lessons: [3], date: "2025-02-28",
+    en: "Can I jump in quickly?",
+    cs: "Můžu rychle vstoupit?",
+    tip: "The standard polite interruption. “Jump in” is informal but entirely acceptable in meetings.",
+    situation: "Chcete se vložit do diskuze. Udělejte to slušně.",
+    variants: ["If I may, I'd like to add...", "Sorry to interrupt, but I think...", "Just a quick point before we move on..."] },
+
+  { id: "dis-let-me-finish", theme: "running-a-meeting", register: "neutral", lessons: [3], date: "2025-02-28",
+    en: "Let me finish my thought, and then I'd love to hear yours.",
+    cs: "Nechte mě dokončit myšlenku a pak si rád poslechnu tu vaši.",
+    tip: "Reclaims the floor without hostility — the promise to listen is what makes it work.",
+    situation: "Někdo vás přerušil. Získejte slovo zpět, ale slušně.",
+    variants: ["I'll get back to that, but let me complete this point first.", "I'd like to wrap this point up before we move ahead."] },
+
+  { id: "dis-walking-eggshells", theme: "disagreeing-politely", register: "idiom", lessons: [3], date: "2025-02-28",
+    en: "walking on eggshells",
+    cs: "chodit kolem někoho po špičkách",
+    example: "After their recent argument, they were both walking on eggshells, trying to keep the peace.",
+    tip: "Describes exhausting over-carefulness around a sensitive person or topic.",
+    situation: "Po hádce se všichni chovají přehnaně opatrně. Popište tu atmosféru." },
+
+  { id: "dis-break-deadlock", theme: "negotiating", register: "idiom", lessons: [3], date: "2025-02-28",
+    en: "break a deadlock",
+    cs: "prolomit patovou situaci",
+    example: "The mediator helped the two parties break the deadlock and reach an agreement.",
+    tip: "“Deadlock” = neither side can move. Also “break the impasse” in more formal registers.",
+    situation: "Jednání uvázlo na mrtvém bodě a mediátor pomohl. Popište to." },
+
+  { id: "dis-clear-the-air", theme: "building-rapport", register: "idiom", lessons: [3], date: "2025-02-28",
+    en: "clear the air",
+    cs: "vyjasnit si to",
+    example: "They decided to have an open conversation to clear the air.",
+    tip: "Resolving tension through open conversation. Slightly informal but fine at work.",
+    situation: "Chcete otevřeně probrat nedorozumění a uvolnit napětí." },
+
+  { id: "dis-make-amends", theme: "building-rapport", register: "formal", lessons: [3], date: "2025-02-28",
+    en: "make amends",
+    cs: "napravit to, odčinit",
+    example: "She apologized and tried to make amends after their falling-out.",
+    tip: "Implies concrete action, not just an apology. “Falling-out” = a serious quarrel.",
+    situation: "Po sporu se někdo snaží vztah napravit skutky. Popište to." },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 2 — Running a meeting  (2025-01-10)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "meet-get-started", theme: "running-a-meeting", register: "neutral", lessons: [2], date: "2025-01-10",
+    en: "Well, it looks like everyone's here, so let's go ahead and get started.",
+    cs: "Vypadá to, že jsme všichni, tak pojďme začít.",
+    tip: "“Go ahead and” is a very American softener before an instruction — it makes a directive sound collaborative.",
+    situation: "Všichni dorazili. Zahajte poradu.",
+    variants: ["I think we can get started now.", "Let's dive right in — we have a lot to cover."] },
+
+  { id: "meet-short-notice", theme: "running-a-meeting", register: "client-safe", lessons: [2], date: "2025-01-10",
+    en: "Thank you all for coming on such short notice — I really appreciate it.",
+    cs: "Děkuji všem, že jste přišli tak narychlo — moc si toho vážím.",
+    tip: "“On short notice” is the fixed collocation. Acknowledging the imposition buys goodwill immediately.",
+    situation: "Svolali jste poradu na poslední chvíli. Poděkujte za účast." },
+
+  { id: "meet-main-aim", theme: "running-a-meeting", register: "neutral", lessons: [2], date: "2025-01-10",
+    en: "Our main aim today is to —",
+    cs: "Naším hlavním cílem je dnes —",
+    tip: "State the objective early; it gives you the authority to cut tangents later.",
+    situation: "Na začátku porady oznamte hlavní cíl.",
+    variants: ["We're here today to...", "I've called this meeting in order to..."] },
+
+  { id: "meet-apologies-absent", theme: "running-a-meeting", register: "client-safe", lessons: [2], date: "2025-01-10",
+    en: "I'm afraid Dave can't be with us today — he asked me to apologize for his absence.",
+    cs: "Bohužel Dave dnes nemůže být s námi — omlouvá se za svou nepřítomnost.",
+    tip: "“I'm afraid” is the standard softener for bad news, however minor.",
+    situation: "Někdo se nemohl dostavit. Omluvte ho na začátku porady." },
+
+  { id: "meet-go-through-minutes", theme: "running-a-meeting", register: "neutral", lessons: [2], date: "2025-01-10",
+    en: "To begin with, I'd like to quickly go through the minutes of our last meeting.",
+    cs: "Na úvod bych rychle prošel zápis z minulé porady.",
+    tip: "“Minutes” = the written record, always plural. Not “notes” in a formal meeting context.",
+    situation: "Chcete na úvod projít zápis z minula." },
+
+  { id: "meet-coming-along", theme: "running-a-meeting", register: "neutral", lessons: [2], date: "2025-01-10",
+    en: "Jack, how is the XYZ project coming along?",
+    cs: "Jacku, jak to jde s projektem XYZ?",
+    tip: "“Coming along” = progressing. Friendlier than “What's the status?” and invites a fuller answer.",
+    situation: "Zeptejte se kolegy na postup projektu." },
+
+  { id: "meet-put-out-fire", theme: "running-a-meeting", register: "idiom", lessons: [2], date: "2025-01-10",
+    en: "There was a sudden fire at one of his clients, so he had to jump on a call to put it out.",
+    cs: "U jednoho klienta vznikl problém, tak musel narychlo na hovor a hasit to.",
+    tip: "“Fire” = urgent crisis; “put it out” = resolve it. “Firefighting” describes a whole day of this.",
+    situation: "Kolega musel narychlo řešit krizi u klienta. Vysvětlete jeho nepřítomnost." },
+
+  { id: "meet-weekend-smalltalk", theme: "small-talk", register: "casual", lessons: [2], date: "2025-01-10",
+    en: "How was your weekend? · How's your day going so far? · How's your workload this week?",
+    cs: "Jaký jste měl víkend? · Jak zatím jde den? · Kolik toho máte tento týden?",
+    tip: "The standard pre-meeting rotation. “How's your workload?” is the safest work-adjacent option — it invites either complaint or relief.",
+    situation: "Před poradou chcete prohodit pár slov s kolegy." },
+
+  { id: "meet-anything-interesting", theme: "small-talk", register: "casual", lessons: [2], date: "2025-01-10",
+    en: "Are you working on anything interesting at the moment — that isn't top secret?",
+    cs: "Děláte teď na něčem zajímavém — co není přísně tajné?",
+    tip: "The joke defuses any confidentiality awkwardness and gives them an easy out. Reliably gets a smile.",
+    situation: "Chcete se zeptat na práci někoho, kdo možná nemůže mluvit o detailech." },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 1 — Conference  (2024-12-13)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "conf-take-seats", theme: "conference", register: "neutral", lessons: [1], date: "2024-12-13",
+    en: "If I could have your attention, please — it's time to get things started.",
+    cs: "Mohu poprosit o pozornost — je čas začít.",
+    tip: "“If I could have your attention” is the standard formula for quieting a room. Softer than “Attention, please.”",
+    situation: "Sál je hlučný a je čas začít konferenci. Získejte pozornost.",
+    variants: ["If we could all take our seats now.", "Time to get this show on the road."] },
+
+  { id: "conf-tear-you-away", theme: "conference", register: "casual", lessons: [1], date: "2024-12-13",
+    en: "Sorry to tear you away from your conversations, but we need to get things going.",
+    cs: "Omlouvám se, že vás vytrhávám z hovorů, ale musíme začít.",
+    tip: "“Tear away” acknowledges you're interrupting something enjoyable — warm and self-aware.",
+    situation: "Lidé se baví a vy je musíte přerušit, aby konference začala." },
+
+  { id: "conf-kick-things-off", theme: "conference", register: "idiom", lessons: [1], date: "2024-12-13",
+    en: "It's my great pleasure to welcome you all — it's time we kicked things off.",
+    cs: "Je mi velkým potěšením vás všechny přivítat — je čas to odstartovat.",
+    tip: "“Kick off” (from football) = begin. Note the subjunctive “it's time we kicked” — past form after “it's time”.",
+    situation: "Zahajujete výroční konferenci. Přivítejte hosty." },
+
+  { id: "conf-food-for-thought", theme: "conference", register: "idiom", lessons: [1], date: "2024-12-13",
+    en: "Thank you, John — you've certainly given us a lot of food for thought.",
+    cs: "Děkuji, Johne — rozhodně jste nám dal hodně k přemýšlení.",
+    tip: "The go-to thank-you for a speaker. Praises without committing you to agreeing with anything they said.",
+    situation: "Řečník doskončil. Poděkujte mu a přejděte k dalšímu.",
+    variants: ["Thank you for that unique take.", "That was really illuminating."] },
+
+  { id: "conf-riveting", theme: "conference", register: "formal", lessons: [1], date: "2024-12-13",
+    en: "What a riveting presentation.",
+    cs: "To byla strhující prezentace.",
+    tip: "“Riveting” = completely absorbing. Strong praise — save it for when it's deserved, or it sounds hollow.",
+    situation: "Prezentace byla vynikající. Pochvalte ji silným slovem." },
+
+  { id: "conf-cover-ground", theme: "conference", register: "idiom", lessons: [1], date: "2024-12-13",
+    en: "That was quite a lot to unpack, and you covered a lot of ground in a short time.",
+    cs: "Bylo toho hodně k rozebrání a zvládl jste toho pokrýt hodně za krátkou dobu.",
+    tip: "“Unpack” = examine in detail; “cover ground” = get through a lot of material. Both very current.",
+    situation: "Řečník toho stihl hodně. Oceňte to." },
+
+  { id: "conf-leads-nicely", theme: "conference", register: "neutral", lessons: [1], date: "2024-12-13",
+    en: "That leads really nicely into our next speaker, who will touch on some complementary topics.",
+    cs: "To krásně navazuje na dalšího řečníka, který se dotkne souvisejících témat.",
+    tip: "Note the spelling: *complementary* (completing) — not *complimentary* (praising or free of charge).",
+    situation: "Propojte prezentaci s dalším řečníkem." },
+
+  { id: "conf-stretch-legs", theme: "conference", register: "casual", lessons: [1], date: "2024-12-13",
+    en: "It's time to take a break and stretch our legs. We'll see you back here in fifteen minutes.",
+    cs: "Je čas na přestávku a protáhnout se. Sejdeme se tu za patnáct minut.",
+    tip: "“Stretch our legs” is the standard friendly way to announce a break. Always give the exact return time.",
+    situation: "Vyhlaste přestávku a řekněte, kdy se vrátit." },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 5 — Pub English / social  (2025-07-25)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "pub-no-way", theme: "pub-social", register: "casual", lessons: [5], date: "2025-07-25",
+    en: "No way!",
+    cs: "Fakt jo? / To si děláš srandu!",
+    tip: "Surprise or disbelief, depending on tone. Extremely common — but keep it out of client meetings.",
+    situation: "Kamarád vám řekne překvapivou novinku. Zareagujte." },
+
+  { id: "pub-fair-enough", theme: "pub-social", register: "casual", lessons: [5], date: "2025-07-25",
+    en: "Fair enough.",
+    cs: "To beru. / OK, chápu.",
+    tip: "Accepts someone's reasoning without full agreement. Ends a minor disagreement gracefully.",
+    situation: "Někdo vysvětlí svůj postoj. Přijměte to, i když nesouhlasíte úplně." },
+
+  { id: "pub-i-feel-you", theme: "pub-social", register: "slang", lessons: [5], date: "2025-07-25",
+    en: "I feel you.",
+    cs: "Chápu tě. / Vím, jak ti je.",
+    tip: "Warm empathy, quite informal. “I hear you” is the safer version for work.",
+    situation: "Kamarád si stěžuje na těžké období. Vyjádřete empatii." },
+
+  { id: "pub-im-down", theme: "pub-social", register: "slang", lessons: [5], date: "2025-07-25",
+    en: "I'm down. / Count me in.",
+    cs: "Jsem pro. / Se mnou počítej.",
+    tip: "“I'm down” is casual American; “Count me in” works in any register including work social events.",
+    situation: "Kolegové plánují večer. Přidejte se." },
+
+  { id: "pub-swamped", theme: "pub-social", register: "idiom", lessons: [5], date: "2025-07-25",
+    en: "I'm swamped.",
+    cs: "Mám toho nad hlavu.",
+    tip: "Overwhelmed with work. Perfectly acceptable at work — more vivid than “I'm busy”.",
+    situation: "Máte příliš mnoho práce. Řekněte to.",
+    variants: ["I'm slammed.", "I'm buried."] },
+
+  { id: "pub-wiped-out", theme: "pub-social", register: "casual", lessons: [5], date: "2025-07-25",
+    en: "I'm wiped out.",
+    cs: "Jsem úplně vyřízený.",
+    tip: "Physically exhausted — distinct from “swamped”, which is about workload, not energy.",
+    situation: "Jste po náročném dni úplně vyčerpaný. Řekněte to." },
+
+  { id: "pub-same-old", theme: "pub-social", register: "idiom", lessons: [5], date: "2025-07-25",
+    en: "Same old, same old.",
+    cs: "Pořád to samé.",
+    tip: "The standard low-effort answer to “How've you been?” — resigned but good-humored.",
+    situation: "Někdo se ptá, co je nového. Nic zvláštního." },
+
+  { id: "pub-nailed-it", theme: "pub-social", register: "casual", lessons: [5], date: "2025-07-25",
+    en: "You nailed it!",
+    cs: "Zvládl jsi to skvěle!",
+    tip: "Enthusiastic praise for a performance or task. Fine in most workplaces, including after a good presentation.",
+    situation: "Kolega odvedl skvělou práci. Pochvalte ho." },
+
+  { id: "pub-good-call", theme: "pub-social", register: "casual", lessons: [5], date: "2025-07-25",
+    en: "Good call.",
+    cs: "Dobré rozhodnutí.",
+    tip: "Short praise for a decision. Works equally well at work and socially.",
+    situation: "Někdo udělal dobré rozhodnutí. Oceňte to." },
+
+  { id: "pub-got-your-back", theme: "pub-social", register: "idiom", lessons: [5], date: "2025-07-25",
+    en: "I've got your back.",
+    cs: "Kryju ti záda.",
+    tip: "Promise of loyal support. Warm and slightly protective — genuinely meaningful to native speakers.",
+    situation: "Kolega je pod tlakem. Ujistěte ho o podpoře." },
+
+  { id: "pub-look-whos-talking", theme: "pub-social", register: "idiom", lessons: [5], date: "2025-07-25",
+    en: "Look who's talking!",
+    cs: "Kdo to říká!",
+    tip: "Ironic — the speaker is guilty of the very thing they're criticizing. Friendly teasing only.",
+    situation: "Někdo vás kritizuje za něco, co sám dělá. Odpovězte ironicky.",
+    variants: ["You're one to talk."] },
+
+  { id: "pub-just-messing", theme: "pub-social", register: "casual", lessons: [5], date: "2025-07-25",
+    en: "I'm just messing with you.",
+    cs: "Jen tě tahám za nos.",
+    tip: "Defuses a joke that may have landed too hard. “Just kidding” is the neutral alternative.",
+    situation: "Zavtipkoval jste a druhý to vzal vážně. Uklidněte ho." },
+
+  { id: "pub-grab-a-drink", theme: "pub-social", register: "casual", lessons: [5], date: "2025-07-25",
+    en: "Want to grab a drink later?",
+    cs: "Nechceš zajít na drink?",
+    tip: "“Grab” is the standard casual verb for informal plans — grab a drink, grab lunch, grab a coffee.",
+    situation: "Pozvěte kolegu na drink po práci.",
+    variants: ["Let's catch up soon.", "We should do this more often."] },
+
+  /* ══════════════════════════════════════════════════════════════════
+     LESSON 6 — Networking  (2025-10-17)
+     ══════════════════════════════════════════════════════════════════ */
+
+  { id: "net-mind-if-i-join", theme: "networking", register: "neutral", lessons: [6], date: "2025-10-17",
+    en: "Do you mind if I join you? Is this seat taken?",
+    cs: "Nevadí, když se přidám? Je tu volno?",
+    tip: "The standard two-part approach: ask permission, then remove the obstacle. Asking about the seat gives them an easy, face-saving out.",
+    situation: "Na akci chcete přisednout ke skupince lidí. Zeptejte se.",
+    variants: ["Would you mind if I sat here?", "Mind if I join?"] },
+
+  { id: "net-get-in-on-this", theme: "networking", register: "casual", lessons: [6], date: "2025-10-17",
+    en: "Ooh, I want to get in on this conversation.",
+    cs: "Á, do téhle debaty se musím zapojit.",
+    tip: "“Get in on” = join something already happening. Playful and flattering — it implies their conversation is worth joining.",
+    situation: "Zaslechnete zajímavou debatu a chcete se přidat.",
+    variants: ["I couldn't help overhearing — mind if I jump in?"] },
+
+  { id: "net-go-ahead", theme: "networking", register: "casual", lessons: [6], date: "2025-10-17",
+    en: "No, no — go ahead.",
+    cs: "Ne ne, jen do toho.",
+    tip: "The reflexive welcome when someone asks to join or speak. Doubling the “no” makes it warmer, not colder.",
+    situation: "Někdo se ptá, jestli se může přidat. Přivítejte ho." },
+
+  { id: "net-havent-met", theme: "networking", register: "neutral", lessons: [6], date: "2025-10-17",
+    en: "Hey, I don't think we've met yet — I'm Michal.",
+    cs: "Zdravím, myslím, že jsme se ještě nepotkali — já jsem Michal.",
+    tip: "The cleanest self-introduction at an event. “I don't think we've met” is softer than “Who are you?” and works even if you have met.",
+    situation: "Na konferenci chcete oslovit neznámého člověka a představit se.",
+    variants: ["How are you doing? I'm Michal, I'm with SAP."] },
+
+  { id: "net-name-come-up", theme: "networking", register: "client-safe", lessons: [6], date: "2025-10-17",
+    en: "Oh, sure — your name has come up a few times. It's great to finally meet you in person.",
+    cs: "Jistě — vaše jméno už tu párkrát padlo. Rád vás konečně poznávám osobně.",
+    tip: "“Your name has come up” is warmer and less formal than “I've heard about you”. “Finally... in person” flatters without overdoing it.",
+    situation: "Potkáte někoho, o kom jste už slyšel. Dejte to najevo mile." },
+
+  { id: "net-just-kidding-great-job", theme: "networking", register: "casual", lessons: [6], date: "2025-10-17",
+    en: "Just kidding — I heard you're doing a great job.",
+    cs: "Dělám si legraci — slyšel jsem, že odvádíte skvělou práci.",
+    tip: "The recovery line after teasing about someone's reputation. Keeps the joke light and ends on a compliment.",
+    situation: "Zavtipkoval jste o něčí pověsti. Ujistěte ho, že to bylo v dobrém." },
+
+  { id: "net-what-brings-you", theme: "networking", register: "neutral", lessons: [6], date: "2025-10-17",
+    en: "So, what brings you here tonight?",
+    cs: "Co vás sem dnes přivádí?",
+    tip: "THE classic networking opener. Open-ended, impossible to answer with one word, and works at any event.",
+    situation: "Zahajte konverzaci s někým na networkingové akci.",
+    variants: ["So how about that last speaker, huh?", "Tough crowd tonight."] },
+
+  { id: "net-where-you-guys-from", theme: "networking", register: "casual", lessons: [6], date: "2025-10-17",
+    en: "So where are you guys from?",
+    cs: "Odkud jste?",
+    tip: "Reliable second question. Note: at a business event this usually means “which company”, not “which country” — context decides.",
+    situation: "Chcete se dozvědět, odkud lidé jsou nebo koho zastupují." },
+
+  { id: "net-line-of-work", theme: "networking", register: "client-safe", lessons: [6], date: "2025-10-17",
+    en: "Do you mind my asking — how did you get into this line of work?",
+    cs: "Můžu se zeptat — jak jste se k téhle práci dostal?",
+    tip: "“Do you mind my asking” (not “me asking”) is the polished form. “Line of work” is warmer than “industry” and invites a story.",
+    situation: "Chcete se zeptat, jak se někdo dostal ke své profesi.",
+    variants: ["That's interesting. How did you get into this line of work?", "What is it that brought you to this line of work?"] },
+
+  { id: "net-fell-into-it", theme: "networking", register: "idiom", lessons: [6], date: "2025-10-17",
+    en: "Well, I sort of fell into it.",
+    cs: "No, tak nějak jsem do toho spadl.",
+    tip: "The modest standard answer — your career happened by accident rather than design. Very common and instantly likeable.",
+    situation: "Někdo se ptá, jak jste se dostal ke své práci. Odpovězte skromně.",
+    variants: ["I never thought I'd be doing this.", "I never pictured myself in this."] },
+
+  { id: "net-keeps-you-busy", theme: "networking", register: "casual", lessons: [6], date: "2025-10-17",
+    en: "Oh, I'll bet that keeps you pretty busy.",
+    cs: "To vás musí docela zaměstnávat.",
+    tip: "“I'll bet” = I imagine. A warm, low-effort way to show interest and keep them talking about their work.",
+    situation: "Někdo popsal náročnou práci. Zareagujte zaujatě." },
+
+  { id: "net-way-you-put-that", theme: "building-rapport", register: "client-safe", lessons: [6], date: "2025-10-17",
+    en: "I really like the way you put that.",
+    cs: "Moc se mi líbí, jak jste to řekl.",
+    tip: "Praises their expression rather than just agreeing — more memorable and more flattering than “I agree”.",
+    situation: "Někdo formuloval myšlenku obzvlášť dobře. Oceňte to.",
+    variants: ["I couldn't agree more.", "I totally agree."] },
+
+  { id: "net-similar-thing", theme: "building-rapport", register: "casual", lessons: [6], date: "2025-10-17",
+    en: "You know what? I had a similar thing happen recently.",
+    cs: "Víte co? Nedávno se mi stalo něco podobného.",
+    tip: "“You know what?” signals you're about to share something personal — it's how you turn an exchange into a real conversation.",
+    situation: "Chcete navázat vlastní zkušeností na to, co protějšek řekl." },
+
+  { id: "net-best-spot-bar", theme: "networking", register: "casual", lessons: [6], date: "2025-10-17",
+    en: "You've got the best spot — right by the bar!",
+    cs: "Máte nejlepší místo — hned u baru!",
+    tip: "Light opener with a built-in compliment and a joke. Low-risk way to start talking to strangers at a reception.",
+    situation: "Chcete odlehčeně oslovit někoho, kdo stojí u baru." },
+
+  { id: "net-how-finding-event", theme: "networking", register: "neutral", lessons: [6], date: "2025-10-17",
+    en: "How are you finding the event so far?",
+    cs: "Jak se vám akce zatím líbí?",
+    original: "How do you find it?",
+    tip: "IMPORTANT: “How are you finding it?” (continuous) asks about an ongoing experience. “How do you find it?” sounds odd here — your note flagged this as wrong, and it is.",
+    situation: "Zeptejte se někoho, jak se mu akce zatím líbí." },
+
+  { id: "net-usually-find-dull", theme: "networking", register: "casual", lessons: [6], date: "2025-10-17",
+    en: "I'm actually really enjoying myself. Usually I find these things a little dull, if I'm being honest, but this one is actually good.",
+    cs: "Vlastně se docela bavím. Obvykle mi tyhle akce přijdou nudné, ale tahle je fakt dobrá.",
+    tip: "“If I'm being honest” licenses a mild criticism and makes the compliment that follows sound sincere rather than polite.",
+    situation: "Akce se vám nečekaně líbí. Řekněte to upřímně." },
+
+  { id: "net-getting-through-it", theme: "networking", register: "casual", lessons: [6], date: "2025-10-17",
+    en: "Oh, I'm getting through it. Honestly, I've been to ones I enjoyed more — but we're only halfway through.",
+    cs: "Zvládám to. Popravdě jsem byl na lepších — ale jsme teprve v půlce.",
+    tip: "Diplomatic negativity: “getting through it” admits boredom without complaining, and the ending leaves room for optimism.",
+    situation: "Akce vás nebaví, ale nechcete být nezdvořilý. Odpovězte diplomaticky." },
+
+  { id: "net-stay-in-touch", theme: "networking", register: "client-safe", lessons: [6], date: "2025-10-17",
+    en: "I'd love to stay in touch — if there's ever a chance to collaborate in the future.",
+    cs: "Rád bych zůstal v kontaktu — kdyby se někdy naskytla příležitost spolupracovat.",
+    tip: "The standard close. Vague enough to be non-committal, specific enough to signal genuine interest.",
+    situation: "Rozhovor byl přínosný. Navrhněte, ať zůstanete v kontaktu." },
+
+  { id: "net-keep-it-in-mind", theme: "networking", register: "neutral", lessons: [6], date: "2025-10-17",
+    en: "Yeah, I'll keep it in mind.",
+    cs: "Jasně, budu to mít na paměti.",
+    tip: "Polite acceptance without commitment. Native speakers often read this as a soft no — useful in both directions.",
+    situation: "Někdo vám něco nabídl. Přijměte to zdvořile, bez závazku." },
+
+  { id: "net-let-you-mingle", theme: "networking", register: "client-safe", lessons: [6], date: "2025-10-17",
+    en: "Hey, it's been great talking with you — I'll let you mingle a little bit.",
+    cs: "Bylo mi potěšením — nechám vás, ať se ještě protočíte mezi lidmi.",
+    tip: "The single most useful networking exit. Framed as a favor to THEM, so nobody loses face. “Mingle” is the exact verb for working a room.",
+    situation: "Chcete slušně ukončit rozhovor a jít dál." },
+
+  { id: "net-make-the-rounds", theme: "networking", register: "idiom", lessons: [6], date: "2025-10-17",
+    en: "This was fun. I'm going to make the rounds a bit, but great meeting you.",
+    cs: "Bylo to fajn. Ještě se tu projdu mezi lidmi, ale rád jsem vás poznal.",
+    tip: "“Make the rounds” = circulate around the room. An honest, socially accepted reason to leave a conversation.",
+    situation: "Chcete se rozloučit a jít se bavit s dalšími lidmi.",
+    variants: ["I'm going to do a lap around the room.", "I need to circle around a bit."] },
+
+  { id: "net-take-up-all-your-time", theme: "networking", register: "client-safe", lessons: [6], date: "2025-10-17",
+    en: "Anyway, I don't want to take up all your time. Really nice talking to you.",
+    cs: "Každopádně nechci vám zabírat celý večer. Bylo moc fajn si popovídat.",
+    tip: "Exits by appearing considerate of their time. “Anyway” is the classic signal that a conversation is wrapping up.",
+    situation: "Rozhovor trvá dlouho. Ukončete ho ohleduplně.",
+    variants: ["Likewise.", "Yeah, you too."] },
+
+  { id: "net-pick-this-up-later", theme: "networking", register: "neutral", lessons: [6], date: "2025-10-17",
+    en: "Can we pick this up later? I really don't want to cut you off, but I've got to get to my next one.",
+    cs: "Můžeme na to navázat později? Nerad vás přerušuju, ale musím na další schůzku.",
+    tip: "“Pick this up later” promises continuation, which softens the interruption. Note “cut you off” = interrupt (correct here).",
+    situation: "Musíte odejít uprostřed dobrého rozhovoru. Navrhněte pokračování." },
+
+  { id: "net-pick-your-brain", theme: "networking", register: "idiom", lessons: [6], date: "2025-10-17",
+    en: "Do you mind if I pick your brain real quick?",
+    cs: "Nevadilo by vám, kdybych se na něco rychle zeptal?",
+    tip: "“Pick your brain” = ask for expert advice informally. Flattering — it treats them as the expert. “Real quick” lowers the commitment.",
+    situation: "Chcete někoho požádat o radu, ale nezabrat mu moc času.",
+    variants: ["I'm sure you're busy, but do you mind if I ask you something real quick?"] },
+
+  { id: "net-congrats-on-deal", theme: "networking", register: "casual", lessons: [6], date: "2025-10-17",
+    en: "Hey, congrats on your deal at —!",
+    cs: "Gratuluju k tomu obchodu s —!",
+    tip: "Naming a specific achievement proves you follow their work. Far more effective than generic praise.",
+    situation: "Chcete pogratulovat k nedávnému úspěchu, o kterém jste slyšel." },
+
+  { id: "net-thats-annoying", theme: "building-rapport", register: "casual", lessons: [6], date: "2025-10-17",
+    en: "That's annoying, isn't it?",
+    cs: "To je otravné, viďte?",
+    tip: "The tag question invites agreement and builds quick solidarity over a shared frustration.",
+    situation: "Sdílíte s někým drobnou frustraci. Vyjádřete to a pozvěte souhlas." },
+
+  { id: "net-how-are-they-looking", theme: "small-talk", register: "casual", lessons: [6], date: "2025-10-17",
+    en: "How are the Raiders looking this season?",
+    cs: "Jak to letos vypadá s Raiders?",
+    tip: "Sport is the safest American small-talk topic. “How are they looking?” works for any team without requiring you to know much.",
+    situation: "Chcete začít small talk o sportu.",
+    variants: ["Did you see the game last night?", "How about those Niners?"] },
+
+  { id: "net-havent-been-following", theme: "small-talk", register: "casual", lessons: [6], date: "2025-10-17",
+    en: "I haven't really been following, to be honest.",
+    cs: "Popravdě to moc nesleduju.",
+    tip: "The graceful way out when sport comes up and you have nothing. Pair it with a question back to keep the conversation moving.",
+    situation: "Někdo mluví o sportu, kterému nerozumíte. Přiznejte to elegantně." },
+
+  { id: "net-not-setting-hopes-up", theme: "small-talk", register: "idiom", lessons: [6], date: "2025-10-17",
+    en: "I hope we'll make the playoffs, but I'm not getting my hopes up.",
+    cs: "Doufám, že se dostaneme do playoff, ale moc si od toho neslibuju.",
+    tip: "“Make the playoffs” is the fixed collocation. “Not getting my hopes up” = guarding against disappointment — useful well beyond sport.",
+    situation: "Doufáte v úspěch, ale nechcete být příliš optimistický.",
+    variants: ["I'm not holding my breath."] },
+
+  { id: "net-not-himself", theme: "small-talk", register: "neutral", lessons: [6], date: "2025-10-17",
+    en: "He's back, but he's not really himself yet.",
+    cs: "Je zpátky, ale ještě není ve své kůži.",
+    tip: "“Not himself” = not at his usual standard, after injury or illness. Works for colleagues as much as athletes.",
+    situation: "Někdo se vrátil po zranění, ale nemá formu. Popište to." },
+
+  { id: "net-usual-suspects", theme: "small-talk", register: "idiom", lessons: [6], date: "2025-10-17",
+    en: "You know, I like it when the usual suspects are struggling a bit — anybody can win it.",
+    cs: "Mám rád, když se favoritům nedaří — pak to může vyhrát kdokoli.",
+    tip: "“The usual suspects” = the predictable big names. Slightly ironic and very idiomatic, in sport and in business.",
+    situation: "Favorité mají slabší sezónu a vás to baví. Vyjádřete to." }
+
+];
+
+/* Explicitly publish to the global object. Belt and braces alongside `var`:
+   guarantees the app block can see this content in every browser context,
+   including iOS Safari where cross-<script> lexical scope has bitten us. */
+if (typeof window !== "undefined") {
+  window.LESSONS = LESSONS;
+  window.PHRASES = PHRASES;
+}
+
+</script>
+<script>
+"use strict";
+
+/* ════════════════════════════════════════════════════════════════════
+   State
+   ════════════════════════════════════════════════════════════════════ */
+const SRS_KEY  = "englishTrainer.srs.v1";
+const HIST_KEY = "englishTrainer.history.v1";
+const DAY = 86400000;
+// Leitner intervals in days, by box index.
+const INTERVALS = [0, 1, 3, 7, 21, 60];
+
+const S = {
+  mode: "learn",
+  theme: "all",
+  order: "smart",
+  queue: [],
+  i: 0,
+  revealed: false,
+  logged: {},                       // phrases already counted this session
+  counts: { got: 0, nearly: 0, missed: 0 }
+};
+
+/* Storage is deliberately defensive: on iOS a file:// page can throw a
+   SecurityError on the localStorage property itself, so every access is
+   guarded. If storage is unavailable the app still runs — progress just
+   isn't kept, and the UI says so. */
+function store() {
+  try { return window.localStorage || null; } catch (_) { return null; }
+}
+const STORAGE_OK = !!store();
+
+function load() {
+  try {
+    const s = store(); if (!s) return {};
+    const raw = s.getItem(SRS_KEY);
+    if (!raw) return {};
+    const data = JSON.parse(raw);
+    // tolerate anything that isn't the shape we expect
+    return (data && typeof data === "object" && !Array.isArray(data)) ? data : {};
+  } catch (_) { return {}; }
+}
+function save() {
+  try {
+    const s = store(); if (!s) return;
+    s.setItem(SRS_KEY, JSON.stringify(srs));
+  } catch (_) { /* quota or private mode — session still works */ }
+}
+
+let srs = load();
+let history = loadHistory();
+
+/* ── review history: one counter per day, for the 7/30-day indicators ──
+   Kept separate from `srs` so it survives independently and stays small
+   (one short key per active day, pruned to a year). */
+function loadHistory() {
+  try {
+    const s = store(); if (!s) return {};
+    const raw = s.getItem(HIST_KEY);
+    const d = raw ? JSON.parse(raw) : {};
+    return (d && typeof d === "object" && !Array.isArray(d)) ? d : {};
+  } catch (_) { return {}; }
+}
+function saveHistory() {
+  try {
+    const s = store(); if (!s) return;
+    s.setItem(HIST_KEY, JSON.stringify(history));
+  } catch (_) { /* ignore */ }
+}
+function dayKey(t) {
+  const d = new Date(t == null ? Date.now() : t);
+  return d.getFullYear() + "-" +
+         String(d.getMonth() + 1).padStart(2, "0") + "-" +
+         String(d.getDate()).padStart(2, "0");
+}
+// Record one review. `fresh` = first time this phrase was ever reviewed.
+function logReview(fresh) {
+  const k = dayKey();
+  const e = history[k] || { r: 0, n: 0 };
+  e.r += 1;
+  if (fresh) e.n += 1;
+  history[k] = e;
+
+  // prune anything older than ~1 year so storage can't grow unbounded
+  const cutoff = dayKey(Date.now() - 366 * DAY);
+  Object.keys(history).forEach(d => { if (d < cutoff) delete history[d]; });
+  saveHistory();
+}
+// Totals over the last `days` days, inclusive of today.
+function since(days) {
+  const from = dayKey(Date.now() - (days - 1) * DAY);
+  let reviews = 0, phrases = 0, activeDays = 0;
+  Object.keys(history).forEach(d => {
+    if (d >= from) {
+      reviews += history[d].r;
+      phrases += history[d].n;
+      activeDays++;
+    }
+  });
+  return { reviews, phrases, activeDays };
+}
+
+const $ = id => document.getElementById(id);
+
+/* ════════════════════════════════════════════════════════════════════
+   Content helpers
+   ════════════════════════════════════════════════════════════════════ */
+const lessonById = {};
+(typeof LESSONS !== "undefined" ? LESSONS : []).forEach(l => { lessonById[l.id] = l; });
+
+function phraseDate(p) {
+  if (p.date) return p.date;
+  let best = "";
+  (p.lessons || []).forEach(id => {
+    const l = lessonById[id];
+    if (l && l.date > best) best = l.date;
+  });
+  return best || "1970-01-01";
+}
+
+function themeLabel(t) {
+  return t.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function poolFor(theme) {
+  const all = typeof PHRASES !== "undefined" ? PHRASES : [];
+  return theme === "all" ? all.slice() : all.filter(p => p.theme === theme);
+}
+
+/* ── SRS ──────────────────────────────────────────────────────────── */
+function box_of(id) { return srs[id] ? srs[id].box : 0; }
+function due(id)    { return srs[id] ? srs[id].due : 0; }
+function isDue(id)  { return due(id) <= Date.now(); }
+
+function grade(id, g) {
+  const cur = srs[id] || { box: 0, due: 0, seen: 0 };
+  logReview(!srs[id]);              // fresh = never reviewed before
+  let b = cur.box;
+  if (g === "got")    b = Math.min(b + 1, INTERVALS.length - 1);
+  else if (g === "nearly") b = Math.max(1, b);
+  else                b = 1;                       // missed → back to box 1
+
+  srs[id] = {
+    box: b,
+    // "missed" stays due immediately so it can resurface this session
+    due: g === "missed" ? 0 : Date.now() + INTERVALS[b] * DAY,
+    seen: cur.seen + 1,
+    last: Date.now()
+  };
+  save();
+}
+
+/* ── ordering ─────────────────────────────────────────────────────── */
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Mild recency bias: newer lessons score a little higher, but nothing is
+// ever excluded — the user asked that every phrase stay reachable.
+function recencyWeight(p) {
+  const ageDays = (Date.now() - new Date(phraseDate(p)).getTime()) / DAY;
+  return 1 + Math.max(0, 1 - ageDays / 730) * 0.6;   // ≤1.6× for brand-new
+}
+
+function buildQueue() {
+  let pool = poolFor(S.theme);
+  if (!pool.length) return [];
+
+  if (S.order === "new")  return pool.sort((a, b) => phraseDate(b).localeCompare(phraseDate(a)));
+  if (S.order === "old")  return pool.sort((a, b) => phraseDate(a).localeCompare(phraseDate(b)));
+  if (S.order === "random") return shuffle(pool);
+
+  // "smart": due-first (SRS wins over recency), then weighted shuffle.
+  const dueNow = pool.filter(p => isDue(p.id));
+  const rest   = pool.filter(p => !isDue(p.id));
+
+  const weighted = arr => arr
+    .map(p => ({ p, k: Math.random() / recencyWeight(p) }))
+    .sort((a, b) => a.k - b.k)
+    .map(o => o.p);
+
+  return weighted(dueNow).concat(weighted(rest));
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Home screen
+   ════════════════════════════════════════════════════════════════════ */
+function themeCounts() {
+  const m = new Map();
+  (typeof PHRASES !== "undefined" ? PHRASES : []).forEach(p => {
+    m.set(p.theme, (m.get(p.theme) || 0) + 1);
+  });
+  return [...m.entries()].sort((a, b) => b[1] - a[1]);
+}
+
+function renderActivity(total) {
+  const w = since(7), m = since(30);
+
+  $("a-week").textContent  = w.reviews;
+  $("a-month").textContent = m.reviews;
+  $("a-week").className  = "act-v" + (w.reviews ? "" : " zero");
+  $("a-month").className = "act-v" + (m.reviews ? "" : " zero");
+
+  const sub = (s) => {
+    if (!s.reviews) return "nothing yet";
+    const bits = [];
+    if (s.phrases) bits.push(s.phrases + " new");
+    bits.push(s.activeDays + (s.activeDays === 1 ? " day" : " days"));
+    return bits.join(" · ");
+  };
+  $("a-week-sub").textContent  = sub(w);
+  $("a-month-sub").textContent = sub(m);
+
+  // 14-day sparkline
+  const days = [];
+  for (let i = 13; i >= 0; i--) {
+    const k = dayKey(Date.now() - i * DAY);
+    days.push({ k, v: history[k] ? history[k].r : 0 });
+  }
+  const peak = Math.max(1, ...days.map(d => d.v));
+  const today = dayKey();
+  $("spark").innerHTML = days.map(d => {
+    const h = d.v ? Math.max(14, Math.round(d.v / peak * 100)) : 8;
+    const cls = d.k === today && d.v ? "today" : (d.v ? "on" : "");
+    return `<i class="${cls}" style="height:${h}%" title="${d.k}: ${d.v}"></i>`;
+  }).join("");
+
+  const streak = currentStreak();
+  $("spark-cap").textContent = streak > 1
+    ? `Last 14 days · ${streak}-day streak 🔥`
+    : "Last 14 days";
+
+  // warn once if progress cannot be saved at all
+  const box = document.querySelector(".activity");
+  if (!STORAGE_OK && !box.querySelector(".nostore")) {
+    const d = document.createElement("div");
+    d.className = "nostore";
+    d.innerHTML = "<b>Progress isn't being saved.</b> Open the file in Safari " +
+                  "(not the Files preview), then Share → Add to Home Screen.";
+    box.appendChild(d);
+  }
+}
+
+// Consecutive days with at least one review, counting back from today
+// (or from yesterday, so a streak isn't broken before you practice today).
+function currentStreak() {
+  let n = 0;
+  const startsToday = !!history[dayKey()];
+  for (let i = startsToday ? 0 : 1; i < 400; i++) {
+    if (history[dayKey(Date.now() - i * DAY)]) n++;
+    else break;
+  }
+  return n;
+}
+
+function renderHome() {
+  const total = (typeof PHRASES !== "undefined" ? PHRASES : []).length;
+  const lessons = (typeof LESSONS !== "undefined" ? LESSONS : []).length;
+  const dueCount = (typeof PHRASES !== "undefined" ? PHRASES : []).filter(p => isDue(p.id)).length;
+  const mastered = Object.keys(srs).filter(k => srs[k].box >= 4).length;
+
+  $("h-due").textContent  = dueCount;
+  $("h-unit").textContent = dueCount === 1 ? "phrase due" : "phrases due";
+  $("h-sub").textContent  = `${total} phrases · ${lessons} lessons` +
+    (mastered ? ` · ${mastered} mastered` : "");
+  // progress = how much of the library is NOT currently due
+  $("h-bar").style.width = (total ? Math.round((total - dueCount) / total * 100) : 0) + "%";
+
+  renderActivity(total);
+
+  // themes
+  const tc = themeCounts();
+  const th = $("themes");
+  th.innerHTML = "";
+  const mk = (key, label, n) => {
+    const b = document.createElement("button");
+    b.className = "chip";
+    b.setAttribute("aria-pressed", S.theme === key);
+    b.innerHTML = label + (n != null ? ` <span class="n">${n}</span>` : "");
+    b.onclick = () => { S.theme = key; renderHome(); };
+    return b;
+  };
+  th.appendChild(mk("all", "All", total));
+  tc.forEach(([t, n]) => th.appendChild(mk(t, themeLabel(t), n)));
+
+  // order
+  const oc = $("orders");
+  oc.innerHTML = "";
+  [["smart", "Smart"], ["random", "Random"], ["new", "Newest first"], ["old", "Oldest first"]]
+    .forEach(([k, label]) => {
+      const b = document.createElement("button");
+      b.className = "chip";
+      b.setAttribute("aria-pressed", S.order === k);
+      b.textContent = label;
+      b.onclick = () => { S.order = k; renderHome(); };
+      oc.appendChild(b);
+    });
+
+  $("m-learn").setAttribute("aria-pressed", S.mode === "learn");
+  $("m-test").setAttribute("aria-pressed", S.mode === "test");
+
+  const n = poolFor(S.theme).length;
+  $("start").disabled = n === 0;
+  $("start").textContent = n ? `Start — ${n} phrase${n === 1 ? "" : "s"}` : "No phrases yet";
+
+  const studied = Object.keys(srs).length;
+  $("foot").innerHTML = (studied
+    ? `${studied} phrase${studied === 1 ? "" : "s"} in progress · saved on this device`
+    : "Progress is saved on this device") +
+    ` · <a href="#" id="backup">back up</a>`;
+  $("backup").onclick = (e) => { e.preventDefault(); backup(); };
+
+  $("pill").textContent = "";
+  $("quit").classList.add("hidden");
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Drill
+   ════════════════════════════════════════════════════════════════════ */
+function begin() {
+  S.queue = buildQueue();
+  S.i = 0;
+  S.revealed = false;
+  S.logged = {};
+  S.counts = { got: 0, nearly: 0, missed: 0 };
+  if (!S.queue.length) return;
+  $("home").classList.add("hidden");
+  $("finish").classList.add("hidden");
+  $("drill").classList.remove("hidden");
+  $("quit").classList.remove("hidden");
+  step();
+}
+
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function metaHtml(p) {
+  const ls = (p.lessons || []).map(id => {
+    const l = lessonById[id];
+    return l ? esc(l.title) : "Lesson " + id;
+  });
+  const d = phraseDate(p);
+  const yr = d && d !== "1970-01-01" ? d.slice(0, 7) : "";
+  const reg = p.register || "neutral";
+  return `<div class="meta">
+      <span class="tag reg-${esc(reg)}">${esc(reg)}</span>
+      <span class="tag">${esc(themeLabel(p.theme))}</span>
+      <span>${ls.map(esc).join(" · ")}${yr ? " · " + yr : ""}</span>
+    </div>`;
+}
+
+function learnCard(p) {
+  let h = metaHtml(p);
+  h += `<p class="en">${esc(p.en)}</p>`;
+  h += `<p class="cs">${esc(p.cs)}</p>`;
+  if (p.example) h += `<div class="block"><div class="h">In context</div><div class="b ex">${esc(p.example)}</div></div>`;
+  if (p.tip)     h += `<div class="block"><div class="h">Tip</div><div class="b tip">${esc(p.tip)}</div></div>`;
+  if (p.original && p.original !== p.en) {
+    h += `<div class="warn"><div class="h">Your note — corrected</div>
+          <s>${esc(p.original)}</s> → <b>${esc(p.en)}</b></div>`;
+  }
+  return h;
+}
+
+function testPrompt(p) {
+  return `<div class="meta"><span class="tag">${esc(themeLabel(p.theme))}</span></div>
+    <p class="situation">${esc(p.situation || p.cs)}</p>
+    <p class="ask">Say it in English — out loud. Then reveal.</p>`;
+}
+
+function testAnswer(p) {
+  let h = testPrompt(p);
+  h += `<div class="answer">`;
+  h += metaHtml(p);
+  h += `<p class="en">${esc(p.en)}</p>`;
+  h += `<p class="cs">${esc(p.cs)}</p>`;
+  if (p.variants && p.variants.length) {
+    h += `<div class="block"><div class="h">Also fine</div><ul class="variants">` +
+         p.variants.map(v => `<li>${esc(v)}</li>`).join("") + `</ul></div>`;
+  }
+  if (p.tip) h += `<div class="block"><div class="h">Tip</div><div class="b tip">${esc(p.tip)}</div></div>`;
+  h += `</div>`;
+  return h;
+}
+
+function step() {
+  const p = S.queue[S.i];
+  if (!p) return finish();
+
+  $("prog").style.width = (S.i / S.queue.length * 100) + "%";
+  $("pill").textContent = `${S.i + 1} / ${S.queue.length}`;
+
+  const box = $("cardbox");
+  const acts = $("acts");
+  // re-trigger the entry animation only on a new phrase, not on reveal
+  box.className = S.revealed ? "card" : "card anim";
+  acts.innerHTML = "";
+
+  if (S.mode === "learn") {
+    box.innerHTML = learnCard(p);
+    // count a phrase as covered once it's actually been shown
+    if (!S.logged[p.id]) { S.logged[p.id] = 1; logReview(false); }
+    const b = document.createElement("button");
+    b.className = "btn primary";
+    b.textContent = S.i === S.queue.length - 1 ? "Finish" : "Next";
+    b.onclick = next;
+    acts.appendChild(b);
+    return;
+  }
+
+  // testing
+  if (!S.revealed) {
+    box.innerHTML = testPrompt(p);
+    const b = document.createElement("button");
+    b.className = "btn primary";
+    b.textContent = "Reveal";
+    b.onclick = () => { S.revealed = true; step(); };
+    acts.appendChild(b);
+  } else {
+    box.innerHTML = testAnswer(p);
+    const row = document.createElement("div");
+    row.className = "grades";
+    [["got", "Got it", "+" + INTERVALS[Math.min(box_of(p.id) + 1, INTERVALS.length - 1)] + "d"],
+     ["nearly", "Nearly", "1d"],
+     ["missed", "Missed", "again"]].forEach(([g, label, sub]) => {
+      const b = document.createElement("button");
+      b.className = "btn g-" + (g === "got" ? "got" : g === "nearly" ? "nearly" : "miss");
+      b.innerHTML = esc(label) + `<small>${esc(sub)}</small>`;
+      b.onclick = () => {
+        grade(p.id, g);
+        S.counts[g]++;
+        if (g === "missed") S.queue.push(p);   // resurface later this session
+        next();
+      };
+      row.appendChild(b);
+    });
+    acts.appendChild(row);
+  }
+}
+
+function next() {
+  S.i++;
+  S.revealed = false;
+  if (S.i >= S.queue.length) return finish();
+  step();
+  window.scrollTo(0, 0);
+}
+
+function finish() {
+  $("drill").classList.add("hidden");
+  $("finish").classList.remove("hidden");
+  $("pill").textContent = "";
+  $("quit").classList.add("hidden");
+
+  const c = S.counts;
+  const graded = c.got + c.nearly + c.missed;
+  const pct = graded ? Math.round(c.got / graded * 100) : 0;
+
+  let h;
+  if (S.mode === "test" && graded) {
+    const C = 2 * Math.PI * 52;                       // r=52
+    const off = C * (1 - pct / 100);
+    h = `<div class="ring">
+        <svg width="116" height="116" viewBox="0 0 116 116">
+          <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#3B6FF5"/><stop offset="1" stop-color="#7B4DFF"/>
+          </linearGradient></defs>
+          <circle class="track" cx="58" cy="58" r="52" fill="none" stroke-width="9"/>
+          <circle class="fill"  cx="58" cy="58" r="52" fill="none" stroke-width="9"
+                  stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${C.toFixed(1)}"/>
+        </svg>
+        <div class="pct">${pct}%</div>
+      </div>
+      <h2>${pct >= 80 ? "Excellent work" : pct >= 50 ? "Solid session" : "Keep going"}</h2>
+      <p>${c.got} of ${graded} on first recall</p>
+      <div class="stats">
+        <div class="stat"><div class="v" style="color:var(--green)">${c.got}</div><div class="k">Got it</div></div>
+        <div class="stat"><div class="v" style="color:var(--amber)">${c.nearly}</div><div class="k">Nearly</div></div>
+        <div class="stat"><div class="v" style="color:var(--red)">${c.missed}</div><div class="k">Missed</div></div>
+      </div>`;
+  } else {
+    h = `<div class="big">✅</div>
+         <h2>Session complete</h2>
+         <p>${S.queue.length} phrase${S.queue.length === 1 ? "" : "s"} reviewed</p>`;
+  }
+  $("donebox").innerHTML = h;
+
+  // animate the ring after paint
+  const fill = $("donebox").querySelector(".ring .fill");
+  if (fill) {
+    const C = 2 * Math.PI * 52;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => { fill.style.strokeDashoffset = (C * (1 - pct / 100)).toFixed(1); });
+    });
+  }
+
+  const again = document.createElement("button");
+  again.className = "btn primary";
+  again.style.width = "100%";
+  again.textContent = "Back to start";
+  again.onclick = home;
+  $("donebox").appendChild(again);
+}
+
+function home() {
+  $("drill").classList.add("hidden");
+  $("finish").classList.add("hidden");
+  $("home").classList.remove("hidden");
+  renderHome();
+  window.scrollTo(0, 0);
+}
+
+/* ── backup / restore ─────────────────────────────────────────────────
+   Progress lives in localStorage, which survives replacing the HTML file
+   as long as the origin doesn't change. This is the belt-and-braces path:
+   copy a small JSON blob out, paste it back in if anything is ever lost. */
+function backup() {
+  const blob = JSON.stringify({ v: 1, srs: srs, history: history });
+  const restore = prompt(
+    "Your progress (copy this somewhere safe).\n\n" +
+    "To RESTORE instead: paste a previous backup here and press OK.",
+    blob
+  );
+  if (restore == null) return;                       // cancelled
+  const text = restore.trim();
+  if (!text || text === blob) return;                // unchanged = just a copy
+  try {
+    const d = JSON.parse(text);
+    if (!d || typeof d !== "object" || !d.srs) throw new Error("bad shape");
+    srs = d.srs;
+    history = (d.history && typeof d.history === "object") ? d.history : {};
+    save(); saveHistory();
+    renderHome();
+    alert("Progress restored: " + Object.keys(srs).length + " phrases.");
+  } catch (_) {
+    alert("That didn't look like a valid backup — nothing was changed.");
+  }
+}
+
+/* ── wiring ───────────────────────────────────────────────────────── */
+$("m-learn").onclick = () => { S.mode = "learn"; renderHome(); };
+$("m-test").onclick  = () => { S.mode = "test";  renderHome(); };
+$("start").onclick   = begin;
+$("quit").onclick    = finish;
+
+/* Startup. Any failure here must be VISIBLE — a silently dead Start button is
+   indistinguishable from a static page, which cost real debugging time. */
+function boot() {
+  const data = (typeof PHRASES !== "undefined" && PHRASES) ||
+               (typeof window !== "undefined" && window.PHRASES) || null;
+  if (!data || !data.length) {
+    fail("Phrase data didn't load.",
+         "The content block is missing or didn't run. Re-download the app file.");
+    return;
+  }
+  renderHome();
+}
+
+function fail(title, detail) {
+  const el = $("h-sub");
+  if (el) el.textContent = title;
+  const s = $("start");
+  if (s) { s.disabled = true; s.textContent = "Not working — see below"; }
+  const host = document.querySelector(".activity") || document.querySelector(".wrap");
+  if (host && !document.getElementById("bootfail")) {
+    const d = document.createElement("div");
+    d.id = "bootfail";
+    d.className = "nostore";
+    d.innerHTML = "<b>" + esc(title) + "</b><br>" + esc(detail);
+    host.appendChild(d);
+  }
+}
+
+// Surface any uncaught error on-screen rather than dying quietly.
+window.addEventListener("error", function (e) {
+  fail("Something went wrong loading the app.",
+       (e.message || "Unknown error") + (e.lineno ? "  (line " + e.lineno + ")" : ""));
+});
+
+try { boot(); }
+catch (e) { fail("Startup failed.", e.name + ": " + e.message); }
+</script>
+</body>
+</html>
